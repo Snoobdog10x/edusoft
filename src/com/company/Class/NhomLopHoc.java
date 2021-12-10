@@ -11,6 +11,15 @@ public class NhomLopHoc {
     public NhomLopHoc() {
     }
 
+    public NhomLopHoc(String manhomlop, int nhom, int thuchanh, String MMH, int SLdangki, int SLtkb) {
+        Manhomlop = manhomlop;
+        Nhom = nhom;
+        this.thuchanh = thuchanh;
+        this.MMH = MMH;
+        this.SLdangki = SLdangki;
+        this.SLtkb = SLtkb;
+    }
+
     public String getManhomlop() {
         return Manhomlop;
     }

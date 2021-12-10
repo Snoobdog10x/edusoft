@@ -11,6 +11,15 @@ public class HocPhan {
     public HocPhan() {
     }
 
+    public HocPhan(String MMH, String tenmonhoc, String mabomon, int sotinchi, int sotiet, int sotietthuchanh) {
+        this.MMH = MMH;
+        this.tenmonhoc = tenmonhoc;
+        this.mabomon = mabomon;
+        this.sotinchi = sotinchi;
+        this.sotiet = sotiet;
+        this.sotietthuchanh = sotietthuchanh;
+    }
+
     public String getMMH() {
         return MMH;
     }
