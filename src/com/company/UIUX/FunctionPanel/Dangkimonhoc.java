@@ -8,6 +8,7 @@ public class Dangkimonhoc extends JPanel {
     private BorderLayout Mainlayout = new BorderLayout();
     private JPanel LeftPanel = new LeftPanel();
     private JPanel CenterPanel = new CenterPanel();
+
     public Dangkimonhoc() {
         setLayout(Mainlayout);
         add(LeftPanel, BorderLayout.WEST);
