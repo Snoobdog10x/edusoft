@@ -28,6 +28,5 @@ public class Giaodienchung extends JFrame {
         Mainpanel=panel;
         add(Mainpanel);
         revalidate();
-
     }
 }
