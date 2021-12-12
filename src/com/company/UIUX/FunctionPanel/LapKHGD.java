@@ -21,6 +21,5 @@ public class LapKHGD extends JPanel {
         //add(KHGD,BorderLayout.CENTER);
         KHGD = new JTable();
         setVisible(true);
-
     }
 }
