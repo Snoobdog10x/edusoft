@@ -1,28 +1,39 @@
 package com.company.UIUX.Dangkimonhoc;
 
-import com.company.UIUX.FunctionPanel.Dangkimonhoc;
-
 import javax.swing.*;
-
 import java.awt.*;
 
 public class DangkimonhocFrame extends JFrame {
-    private Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
-    private int screenwidth=  size.width;
-    private int screenheight= size.height;
-    private JPanel MainPanel=new JPanel();
-    public DangkimonhocFrame(){
+    private int framewidth;
+    private int frameheight;
+    private JPanel MainPanel;
+
+    public DangkimonhocFrame() {
         init();
     }
-    private void init(){
+
+    private void init() {
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth = size.width;
+        int screenheight = size.height;
+        framewidth=(int) (screenwidth * 0.3);
+        frameheight=(int) (screenheight * 0.5);
         setLayout(new BorderLayout());
-        setSize((int)(screenwidth*0.3),(int)(screenheight*0.5));
+        setSize(framewidth,frameheight);
+        initMainpanel();
         centreWindow();
+        setBackground(Color.blue);
         setVisible(true);
         setResizable(false);
-        setBackground(Color.blue);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
+
+    private void initMainpanel() {
+        MainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        add(MainPanel);
+    }
+
     public void centreWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - getWidth()) / 2);

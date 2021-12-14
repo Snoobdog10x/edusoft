@@ -4,6 +4,10 @@ import com.company.Process.ProcessDKMH;
 import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +20,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     private JButton add = new JButton("Đăng ký môn học");
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật đăng kí");
+    private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
     private JScrollPane MainScroll;
     private BorderLayout MainLayout = new BorderLayout();
@@ -39,14 +44,50 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
 
     private void loadTable() {
         MainTable = new JTable(processDKMH.loadTableModel());
+        rowSorter = new TableRowSorter<>(MainTable.getModel());
         MainScroll = new JScrollPane(MainTable);
     }
 
+    private JTextField jtfFilter = new JTextField();
     private void BottomPanel() {
+        Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth= (int) (size.width);
+        int screenheight= (int) (size.height);
+        jtfFilter.setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
         BottomPanel = new JPanel();
         BottomPanel.add(add);
         BottomPanel.add(update);
         BottomPanel.add(reload);
+        BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
+        BottomPanel.add(jtfFilter);
+        jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = jtfFilter.getText();
+
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = jtfFilter.getText();
+
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
     }
 
     private void CenterPanel() {
