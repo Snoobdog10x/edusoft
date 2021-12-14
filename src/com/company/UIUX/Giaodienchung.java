@@ -22,8 +22,9 @@ public class Giaodienchung extends JFrame implements ActionListener {
         setLayout(mainlayout);
         add(MenuBarPannel, BorderLayout.NORTH);
         add(Mainpanel, BorderLayout.CENTER);
-        setVisible(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setResizable(false);
+        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 

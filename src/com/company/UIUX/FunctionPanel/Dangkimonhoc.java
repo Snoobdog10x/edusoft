@@ -1,6 +1,7 @@
 package com.company.UIUX.FunctionPanel;
 
 import com.company.Process.ProcessDKMH;
+import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,6 +46,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         BottomPanel = new JPanel();
         BottomPanel.add(add);
         BottomPanel.add(update);
+        BottomPanel.add(reload);
     }
 
     private void CenterPanel() {
@@ -83,7 +85,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add) {
-            System.out.println("hiih");
+            new DangkimonhocFrame();
         }
         if (e.getSource() == update) {
             System.out.println("hiih");

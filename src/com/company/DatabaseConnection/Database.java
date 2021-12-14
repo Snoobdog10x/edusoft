@@ -39,7 +39,7 @@ public class Database {
         String SQL = "SELECT s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
                 "FROM lichsudangky l, sinhvien s, nhomlophoc n,hocphan h " +
                 "WHERE l.MSSV=s.MSSV and l.Manhomlop=n.Manhomlop and l.MMH=h.MMH";
-        System.out.println(SQL);
+        //System.out.println(SQL);
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             int i = 0;
