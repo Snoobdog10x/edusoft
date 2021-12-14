@@ -10,7 +10,11 @@ public class DangkimonhocFrame extends JFrame {
     private Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
     private int screenwidth=  size.width;
     private int screenheight= size.height;
+    private JPanel MainPanel=new JPanel();
     public DangkimonhocFrame(){
+        init();
+    }
+    private void init(){
         setLayout(new BorderLayout());
         setSize((int)(screenwidth*0.3),(int)(screenheight*0.5));
         centreWindow();

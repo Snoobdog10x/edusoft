@@ -56,7 +56,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
     }
 
-    private JLabel[] LeftLabels = {new JLabel("<html>Mã SV<br/></html>"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
+    private JLabel[] LeftLabels = {new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
             , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
     private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(),
             new JTextField(), new JTextField(), new JTextField(), new JTextField()};
