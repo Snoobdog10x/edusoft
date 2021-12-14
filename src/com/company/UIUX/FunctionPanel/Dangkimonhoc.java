@@ -1,5 +1,7 @@
 package com.company.UIUX.FunctionPanel;
 
+import com.company.Process.ProcessDKMH;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,9 +15,10 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     private JButton add = new JButton("Đăng ký môn học");
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật đăng kí");
-    public JTable MainTable;
-    public JScrollPane MainScroll;
-    public BorderLayout MainLayout = new BorderLayout();
+    private JTable MainTable;
+    private JScrollPane MainScroll;
+    private BorderLayout MainLayout = new BorderLayout();
+    private ProcessDKMH processDKMH = new ProcessDKMH();
 
     public Dangkimonhoc() {
         init();
@@ -34,7 +37,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     }
 
     private void loadTable() {
-        MainTable = new JTable();
+        MainTable = new JTable(processDKMH.loadTableModel());
         MainScroll = new JScrollPane(MainTable);
     }
 
@@ -51,8 +54,22 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
     }
 
+    private JLabel[] LeftLabels = {new JLabel("<html>Mã SV<br/></html>"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
+            , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
+    private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(),
+            new JTextField(), new JTextField(), new JTextField(), new JTextField()};
+
     private void LeftPanel() {
-        LeftPanel = new JPanel();
+        Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth= (int) (size.width);
+        int screenheight= (int) (size.height);
+        LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth*0.15),screenheight));
+        for(int i=0;i<8;i++){
+            LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
+            LeftPanel.add(LeftLabels[i]);
+            LeftPanel.add(LeftTextfields[i]);
+        }
     }
 
     private void addEvent() {
