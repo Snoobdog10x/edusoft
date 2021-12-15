@@ -1,5 +1,6 @@
 package com.company.DatabaseConnection;
 
+import com.company.Class.HocPhan;
 import com.company.Class.lichsudangky;
 
 import java.sql.*;
@@ -15,14 +16,14 @@ public class Database {
     public Database(){
         connectdb();
     }
-    private void connectdb(){
+    public void connectdb(){
         try{
             conn= DriverManager.getConnection(URL,User,pass);
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-    private ResultSet getResultsetbySQL(String SQL){
+    public ResultSet getResultsetbySQL(String SQL){
         try {
             Statement stmt = null;
             stmt = conn.createStatement();
