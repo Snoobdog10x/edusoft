@@ -67,4 +67,8 @@ public class HocPhan {
     public void setSotietthuchanh(int sotietthuchanh) {
         this.sotietthuchanh = sotietthuchanh;
     }
+    public Object[] toObjectArray(){
+        Object[] objects={MMH,tenmonhoc,mabomon,sotinchi,sotiet,sotietthuchanh};
+        return objects;
+    }
 }
