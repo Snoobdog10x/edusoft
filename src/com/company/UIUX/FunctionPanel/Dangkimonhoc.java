@@ -6,6 +6,8 @@ import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -95,6 +97,11 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         CenterPanel.setLayout(MainLayout);
         CenterPanel.add(MainScroll, BorderLayout.CENTER);
         CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
+        MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                System.out.println(MainTable.getValueAt(MainTable.getSelectedRow(), 0).toString());
+            }
+        });
     }
 
     private JLabel[] LeftLabels = {new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")

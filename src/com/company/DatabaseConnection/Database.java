@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private String URL="jdbc:mysql://localhost:3306/cnpm";
+    private String URL="jdbc:mysql://snooby.ddns.net:3306/cnpm";
     private String User="root";
-    private String pass="";
+    private String pass="thanhanh";
     private Connection conn;
-
     public Database(){
         connectdb();
     }
