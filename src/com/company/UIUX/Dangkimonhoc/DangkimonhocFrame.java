@@ -30,7 +30,6 @@ public class DangkimonhocFrame extends JFrame {
 
     private void initMainpanel() {
         MainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
         add(MainPanel);
     }
 
