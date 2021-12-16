@@ -93,8 +93,8 @@ public class Database {
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             while (rs.next()) {
-                SinhVien sv = new SinhVien(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getDate(5),
-                        rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
+                SinhVien sv = new SinhVien(rs.getInt("MSSV"),rs.getString("malop"),rs.getString("holot"), rs.getString("ten"),rs.getDate("ngaysinh"),
+                        rs.getString("sdt"),rs.getString("manganh"),rs.getString("noisinh"),rs.getString("email"));
                 list.add(sv);
             }
             return list;
@@ -102,6 +102,19 @@ public class Database {
             throwables.printStackTrace();
             return list;
         }
+    }
+    public boolean addsv(SinhVien sv){
+        boolean check = false;
+        List<SinhVien> list = new ArrayList<SinhVien>();
+        String SQL = "Insert into sinhvien(malop,holot,ten,ngaysinh,sdt,manganh,noisinh,email) " +
+                "values('" + sv.getMalop() + "','" + sv.getHolot() + "'," + sv.getTen() + "," + sv.getNgaysinh() +
+                "" + sv.getSdt()+ "," + sv.getManganh() + "," + sv.getNoisinh() + "," + sv.getEmail() +" ) ";
+        //System.out.println(SQL);
+        int row = updatetoDatabasebySQL(SQL);
+        if (row == 1) {
+            check = true;
+        }
+        return check;
     }
     public void closedb() {
         try {
