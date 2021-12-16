@@ -87,4 +87,22 @@ public class vienchuc {
     public void setEmail(String email) {
         this.email = email;
     }
+    public Object[] toObjectArray(){
+        Object[] objects={ MVC, loaivc, ten, holot, sdt, ngaysinh, noisinh, email};
+        return objects;
+    }
+
+    @Override
+    public String toString() {
+        return "vienchuc{" +
+                "MVC='" + MVC + '\'' +
+                ", loaivc='" + loaivc + '\'' +
+                ", ten='" + ten + '\'' +
+                ", holot='" + holot + '\'' +
+                ", sdt='" + sdt + '\'' +
+                ", ngaysinh='" + ngaysinh + '\'' +
+                ", noisinh='" + noisinh + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
