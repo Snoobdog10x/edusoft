@@ -7,8 +7,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Quanlysinhvien extends JPanel {
+public class Quanlysinhvien extends JPanel implements ActionListener {
     private BorderLayout Mainlayout = new BorderLayout();
     private JPanel LeftPanel;
     private JPanel CenterPanel;
@@ -69,24 +73,31 @@ public class Quanlysinhvien extends JPanel {
         CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
     }
 
-    private JLabel[] LeftLabels = {new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
-            , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
+    private JLabel[] LeftLabels = {new JLabel("Mã SV"), new JLabel("Mã lớp"), new JLabel("Tên lót"), new JLabel("Tên")
+            , new JLabel("Ngày sinh"), new JLabel("SĐT"), new JLabel("Mã ngành"), new JLabel("Nơi sinh"),new JLabel("Email")};
     private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(),
-            new JTextField(), new JTextField(), new JTextField(), new JTextField()};
+            new JTextField(), new JTextField(), new JTextField(), new JTextField(),new JTextField()};
 
     private void LeftPanel() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int screenwidth = (int) (size.width);
         int screenheight = (int) (size.height);
         LeftTextfields[0].setEnabled(false);
-        LeftTextfields[2].setEnabled(false);
-        LeftTextfields[5].setEnabled(false);
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 9; i++) {
             LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
             LeftPanel.add(LeftLabels[i]);
             LeftPanel.add(LeftTextfields[i]);
         }
+    }
+    private void addEvent() {
+        add.addActionListener(this);
+        update.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
