@@ -1,10 +1,12 @@
 package com.company.UIUX.FunctionPanel;
 
+import com.company.Class.HocPhan;
 import com.company.Process.ProcessQLMH;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -102,6 +104,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
         int screenheight= (int) (size.height);
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth*0.15),screenheight));
+        LeftTextfields[0].enable(false);
         for(int i=0;i<6;i++){
             LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
             LeftPanel.add(LeftLabels[i]);
@@ -120,15 +123,68 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add) {
-            System.out.println("hiih");
+           addAction();
         }
         if (e.getSource() == update) {
-            System.out.println("hiih");
+            updateAction();
         }
         if (e.getSource() == reload) {
-            System.out.println("hiih");
+           reloadtable();
         }
     }
+    private void reloadtable(){
+        MainTable.setModel(processQLMH.reloadTableModel((DefaultTableModel) MainTable.getModel(),MainTable.getRowCount()));
+    }
     //End Event
+    private void addAction(){
+        String tenmonhoc = LeftTextfields[1].getText().toString();
+        String mabomon = LeftTextfields[2].getText().toString();
+        int sotinchi=0;
+        int sotiet=0;
+        int sotietthuchanh=0;
+        try{
+            sotinchi = Integer.parseInt(LeftTextfields[3].getText().toString()) ;
+            sotiet = Integer.parseInt(LeftTextfields[4].getText().toString()) ;
+            sotietthuchanh = Integer.parseInt(LeftTextfields[5].getText().toString()) ;
+        }catch(Exception ex){
+            System.out.println("loi");
+            return;
+        }
+        HocPhan monhoc = new HocPhan(tenmonhoc,mabomon,sotinchi,sotiet,sotietthuchanh);
+        boolean check = processQLMH.addMH(monhoc);
+        if(check==true){
+            System.out.println("thanh cong");
+        }
+        else{
+            System.out.println("huhu");
+        }
+        System.out.println("hiih");
+    }
+    private void updateAction(){
+        String tenmonhoc = LeftTextfields[1].getText().toString();
+        String mabomon = LeftTextfields[2].getText().toString();
+        int mmh;
+        int sotinchi=0;
+        int sotiet=0;
+        int sotietthuchanh=0;
+        try{
+            mmh = Integer.parseInt(LeftTextfields[0].getText().toString()) ;
+            sotinchi = Integer.parseInt(LeftTextfields[3].getText().toString()) ;
+            sotiet = Integer.parseInt(LeftTextfields[4].getText().toString()) ;
+            sotietthuchanh = Integer.parseInt(LeftTextfields[5].getText().toString()) ;
+        }catch(Exception ex){
+            System.out.println("loi");
+            return;
+        }
+        HocPhan monhoc = new HocPhan(mmh,tenmonhoc,mabomon,sotinchi,sotiet,sotietthuchanh);
+        boolean check = processQLMH.updateMH(monhoc);
+        if(check==true){
+            System.out.println("thanh cong");
+        }
+        else{
+            System.out.println("huhu");
+        }
+        System.out.println("hiih");
+    }
 
 }
