@@ -75,7 +75,7 @@ public class Database {
         try {
             int i = 0;
             while (rs.next()) {
-                Object ls = rs.getObject(i++);
+                lichsudangky ls=new lichsudangky(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getDate(8));
                 list.add((lichsudangky) ls);
             }
             return list;
