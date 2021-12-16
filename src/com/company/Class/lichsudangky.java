@@ -3,16 +3,16 @@ package com.company.Class;
 import java.sql.Date;
 
 public class lichsudangky {
-    private String MSSV;
+    private int MSSV;
     private String ten;
-    private String manhomlop;
+    private int manhomlop;
     private String Nhom;
     private String TH;
-    private String MMH;
+    private int MMH;
     private String tenmonhoc;
     private Date ngaydangki;
 
-    public lichsudangky(String MSSV, String ten, String manhomlop, String nhom, String TH, String MMH, String tenmonhoc, Date ngaydangki) {
+    public lichsudangky(int MSSV, String ten, int manhomlop, String nhom, String TH, int MMH, String tenmonhoc, Date ngaydangki) {
         this.MSSV = MSSV;
         this.ten = ten;
         this.manhomlop = manhomlop;
@@ -23,11 +23,11 @@ public class lichsudangky {
         this.ngaydangki = ngaydangki;
     }
 
-    public String getMSSV() {
+    public int getMSSV() {
         return MSSV;
     }
 
-    public void setMSSV(String MSSV) {
+    public void setMSSV(int MSSV) {
         this.MSSV = MSSV;
     }
 
@@ -39,11 +39,11 @@ public class lichsudangky {
         this.ten = ten;
     }
 
-    public String getManhomlop() {
+    public int getManhomlop() {
         return manhomlop;
     }
 
-    public void setManhomlop(String manhomlop) {
+    public void setManhomlop(int manhomlop) {
         this.manhomlop = manhomlop;
     }
 
@@ -63,11 +63,11 @@ public class lichsudangky {
         this.TH = TH;
     }
 
-    public String getMMH() {
+    public int getMMH() {
         return MMH;
     }
 
-    public void setMMH(String MMH) {
+    public void setMMH(int MMH) {
         this.MMH = MMH;
     }
 
@@ -86,12 +86,10 @@ public class lichsudangky {
     public void setNgaydangki(Date ngaydangki) {
         this.ngaydangki = ngaydangki;
     }
-
     public Object[] toObjectArray(){
-        Object[] objects={MSSV,ten,manhomlop,Nhom,MMH,TH,tenmonhoc,ngaydangki};
+        Object[] objects={MSSV,ten,manhomlop,Nhom,TH,MMH,tenmonhoc,ngaydangki};
         return objects;
     }
-
     @Override
     public String toString() {
         return "lichsudangky{" +

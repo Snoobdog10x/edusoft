@@ -54,10 +54,10 @@ public class Database {
         //System.out.println(SQL);
         ResultSet rs = getResultsetbySQL(SQL);
         try {
-            int i = 0;
             while (rs.next()) {
-                Object ls = rs.getObject(i++);
-                list.add((lichsudangky) ls);
+                lichsudangky ls=new lichsudangky(rs.getInt(1),rs.getString(2),rs.getInt(3)
+                        ,rs.getString(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getDate(8));
+                list.add(ls);
             }
             return list;
         } catch (SQLException throwables) {
