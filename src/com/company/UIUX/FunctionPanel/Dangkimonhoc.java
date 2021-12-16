@@ -1,6 +1,5 @@
 package com.company.UIUX.FunctionPanel;
 
-import com.company.Main;
 import com.company.Process.ProcessDKMH;
 import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 
@@ -48,8 +47,13 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     }
 
     private void loadTable() {
-        DefaultTableModel tableModel=processDKMH.loadTableModel();
-        MainTable = new JTable(tableModel);
+        DefaultTableModel tableModel = processDKMH.loadTableModel();
+        MainTable = new JTable(tableModel) {
+            public boolean editCellAt(int row, int column, java.util.EventObject e) {
+                return false;
+            }
+
+        };
         rowSorter = new TableRowSorter<>(MainTable.getModel());
         MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
@@ -82,13 +86,16 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             new JTextField(), new JTextField(), new JTextField(), new JTextField()};
 
     private void LeftPanel() {
-        Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth= (int) (size.width);
-        int screenheight= (int) (size.height);
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth = (int) (size.width);
+        int screenheight = (int) (size.height);
+        LeftTextfields[0].setEnabled(false);
+        LeftTextfields[2].setEnabled(false);
+        LeftTextfields[5].setEnabled(false);
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth*0.15),screenheight));
-        for(int i=0;i<8;i++){
-            LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
+        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
+        for (int i = 0; i < 8; i++) {
+            LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
             LeftPanel.add(LeftLabels[i]);
             LeftPanel.add(LeftTextfields[i]);
         }
@@ -126,9 +133,20 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         });
         MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                System.out.println(MainTable.getValueAt(MainTable.getSelectedRow(), 0).toString());
+                try {
+
+                    int j = 0;
+                    for (JTextField i : LeftTextfields) {
+                        int a = MainTable.convertRowIndexToModel(MainTable.getSelectedRow());
+                        System.out.println(a);
+                        i.setText(MainTable.getValueAt(a, j++).toString());
+                    }
+                }catch (Exception e){
+
+                }
             }
         });
+
     }
 
     //End Init Panel
