@@ -12,8 +12,10 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Quanlymonhoc extends JPanel implements ActionListener {
+public class Quanlymonhoc extends JPanel implements ActionListener, MouseListener {
     private BorderLayout Mainlayout = new BorderLayout();
     private JPanel LeftPanel;
     private JPanel CenterPanel;
@@ -24,10 +26,12 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
     private JTable MainTable;
     private JScrollPane MainScroll;
     private TableRowSorter<TableModel> rowSorter;
-    private ProcessQLMH processQLMH= new ProcessQLMH();
+    private ProcessQLMH processQLMH = new ProcessQLMH();
     private BorderLayout MainLayout = new BorderLayout();
 
-    public Quanlymonhoc() { init();}
+    public Quanlymonhoc() {
+        init();
+    }
 
     //Start Init Panel
     private void init() {
@@ -40,18 +44,26 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
         add(LeftPanel, BorderLayout.WEST);
         add(CenterPanel, BorderLayout.CENTER);
     }
+
     private void loadTable() {
-        MainTable = new JTable(processQLMH.loadTableModel());
+        MainTable = new JTable(processQLMH.loadTableModel()){
+            public boolean editCellAt (int row, int column, java.util.EventObject e) {
+                return false;
+            }
+
+        };
         rowSorter = new TableRowSorter<>(MainTable.getModel());
+        MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
     }
 
     private JTextField jtfFilter = new JTextField();
-    public void BottomPanel(){
-        Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth= (int) (size.width);
-        int screenheight= (int) (size.height);
-        jtfFilter.setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
+
+    public void BottomPanel() {
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth = (int) (size.width);
+        int screenheight = (int) (size.height);
+        jtfFilter.setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
         BottomPanel = new JPanel();
         BottomPanel.add(add);
         BottomPanel.add(update);
@@ -62,7 +74,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 String text = jtfFilter.getText();
-
+                System.out.println(text);
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
@@ -87,26 +99,28 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
             }
         });
     }
+
     private void CenterPanel() {
         CenterPanel = new JPanel();
         CenterPanel.setLayout(MainLayout);
         CenterPanel.add(MainScroll, BorderLayout.CENTER);
         CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
     }
+
     private JLabel[] LeftLabels = {new JLabel("Mã Môn Học"), new JLabel("Tên Môn Học"), new JLabel("Mã Bộ Môn"), new JLabel("Số Tín Chỉ")
             , new JLabel("Số Tiết"), new JLabel("Số Tiết Thực Hành")};
     private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(),
             new JTextField(), new JTextField()};
 
-    private void LeftPanel(){
-        Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth= (int) (size.width);
-        int screenheight= (int) (size.height);
+    private void LeftPanel() {
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth = (int) (size.width);
+        int screenheight = (int) (size.height);
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth*0.15),screenheight));
+        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
         LeftTextfields[0].enable(false);
-        for(int i=0;i<6;i++){
-            LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
+        for (int i = 0; i < 6; i++) {
+            LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
             LeftPanel.add(LeftLabels[i]);
             LeftPanel.add(LeftTextfields[i]);
         }
@@ -116,6 +130,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
         add.addActionListener(this);
         update.addActionListener(this);
         reload.addActionListener(this);
+        MainTable.addMouseListener(this);
     }
 
     //End Init Panel
@@ -123,68 +138,128 @@ public class Quanlymonhoc extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add) {
-           addAction();
+            addAction();
         }
         if (e.getSource() == update) {
             updateAction();
         }
         if (e.getSource() == reload) {
-           reloadtable();
+            reloadtable();
         }
     }
-    private void reloadtable(){
-        MainTable.setModel(processQLMH.reloadTableModel((DefaultTableModel) MainTable.getModel(),MainTable.getRowCount()));
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        clickTable();
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
     //End Event
-    private void addAction(){
-        String tenmonhoc = LeftTextfields[1].getText().toString();
-        String mabomon = LeftTextfields[2].getText().toString();
-        int sotinchi=0;
-        int sotiet=0;
-        int sotietthuchanh=0;
-        try{
-            sotinchi = Integer.parseInt(LeftTextfields[3].getText().toString()) ;
-            sotiet = Integer.parseInt(LeftTextfields[4].getText().toString()) ;
-            sotietthuchanh = Integer.parseInt(LeftTextfields[5].getText().toString()) ;
-        }catch(Exception ex){
-            System.out.println("loi");
+    private void addAction() {
+        String tenmonhoc;
+        String mabomon;
+        int sotinchi = 0;
+        int sotiet = 0;
+        int sotietthuchanh = 0;
+        if(!LeftTextfields[0].getText().toString().equals("")){
+            JOptionPane.showMessageDialog(this, "Mã môn học phải để trống");
             return;
         }
-        HocPhan monhoc = new HocPhan(tenmonhoc,mabomon,sotinchi,sotiet,sotietthuchanh);
-        boolean check = processQLMH.addMH(monhoc);
-        if(check==true){
-            System.out.println("thanh cong");
+        for (int i = 1; i < 6; i++) {
+            if (LeftTextfields[i].getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Các thông tin không được để trống");
+                return;
+            }
         }
-        else{
-            System.out.println("huhu");
+        try {
+            tenmonhoc = LeftTextfields[1].getText().toString();
+            mabomon = LeftTextfields[2].getText().toString();
+            sotinchi = Integer.parseInt(LeftTextfields[3].getText().toString());
+            sotiet = Integer.parseInt(LeftTextfields[4].getText().toString());
+            sotietthuchanh = Integer.parseInt(LeftTextfields[5].getText().toString());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Số tín chỉ, số tiết, " +
+                    "số tiết thực hành phải được nhập dưới dạng số học");
+            return;
+        }
+        HocPhan monhoc = new HocPhan(tenmonhoc, mabomon, sotinchi, sotiet, sotietthuchanh);
+        boolean check = processQLMH.addMH(monhoc);
+        if (check == true) {
+            JOptionPane.showMessageDialog(this, "Thêm môn học thành công");
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm môn học thất bại  (lỗi hệ thống)");
         }
         System.out.println("hiih");
     }
-    private void updateAction(){
-        String tenmonhoc = LeftTextfields[1].getText().toString();
-        String mabomon = LeftTextfields[2].getText().toString();
+
+    private void updateAction() {
+        String tenmonhoc;
+        String mabomon;
         int mmh;
-        int sotinchi=0;
-        int sotiet=0;
-        int sotietthuchanh=0;
-        try{
-            mmh = Integer.parseInt(LeftTextfields[0].getText().toString()) ;
-            sotinchi = Integer.parseInt(LeftTextfields[3].getText().toString()) ;
-            sotiet = Integer.parseInt(LeftTextfields[4].getText().toString()) ;
-            sotietthuchanh = Integer.parseInt(LeftTextfields[5].getText().toString()) ;
-        }catch(Exception ex){
-            System.out.println("loi");
+        int sotinchi = 0;
+        int sotiet = 0;
+        int sotietthuchanh = 0;
+        for (int i = 0; i < 6; i++) {
+            if (LeftTextfields[i].getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Các thông tin không được để trống");
+                return;
+            }
+        }
+        try {
+            tenmonhoc = LeftTextfields[1].getText().toString();
+            mabomon = LeftTextfields[2].getText().toString();
+            mmh = Integer.parseInt(LeftTextfields[0].getText().toString());
+            sotinchi = Integer.parseInt(LeftTextfields[3].getText().toString());
+            sotiet = Integer.parseInt(LeftTextfields[4].getText().toString());
+            sotietthuchanh = Integer.parseInt(LeftTextfields[5].getText().toString());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Số tín chỉ, số tiết, " +
+                    "số tiết thực hành phải được nhập dưới dạng số học");
             return;
         }
-        HocPhan monhoc = new HocPhan(mmh,tenmonhoc,mabomon,sotinchi,sotiet,sotietthuchanh);
+
+        HocPhan monhoc = new HocPhan(mmh, tenmonhoc, mabomon, sotinchi, sotiet, sotietthuchanh);
         boolean check = processQLMH.updateMH(monhoc);
-        if(check==true){
-            System.out.println("thanh cong");
-        }
-        else{
-            System.out.println("huhu");
+        if (check == true) {
+            JOptionPane.showMessageDialog(this, "Cập nhật thông tin môn học thành công");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thông tin môn học thất bại (lỗi hệ thống)");
         }
         System.out.println("hiih");
+    }
+
+    private void reloadtable() {
+        MainTable.setModel(processQLMH.reloadTableModel((DefaultTableModel) MainTable.getModel(), MainTable.getRowCount()));
+    }
+
+    private void clickTable() {
+        int row = MainTable.getSelectedRow();
+        if (row >= 0) {
+            for (int i = 0; i < 6; i++) {
+                LeftTextfields[i].setText(MainTable.getValueAt(row, i).toString());
+            }
+        }
+        System.out.println(row);
     }
 
 }
