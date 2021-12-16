@@ -1,11 +1,13 @@
 package com.company.Class;
 
+import java.sql.Date;
+
 public class SinhVien {
-    private String MSSV;
+    private int MSSV;
     private String malop;
     private String holot;
     private String ten;
-    private String ngaysinh;
+    private Date ngaysinh;
     private String manganh;
     private String noisinh;
     private String email;
@@ -13,7 +15,7 @@ public class SinhVien {
 
     public SinhVien(){}
 
-    public SinhVien(String MSSV, String malop, String holot, String ten, String ngaysinh, String manganh, String noisinh, String email, String sdt) {
+    public SinhVien(int MSSV, String malop, String holot, String ten, Date ngaysinh, String manganh, String noisinh, String email, String sdt) {
         this.MSSV = MSSV;
         this.malop = malop;
         this.holot = holot;
@@ -25,11 +27,11 @@ public class SinhVien {
         this.sdt = sdt;
     }
 
-    public String getMSSV() {
+    public int getMSSV() {
         return MSSV;
     }
 
-    public void setMSSV(String MSSV) {
+    public void setMSSV(int MSSV) {
         this.MSSV = MSSV;
     }
 
@@ -57,11 +59,11 @@ public class SinhVien {
         this.ten = ten;
     }
 
-    public String getNgaysinh() {
+    public Date getNgaysinh() {
         return ngaysinh;
     }
 
-    public void setNgaysinh(String ngaysinh) {
+    public void setNgaysinh(Date ngaysinh) {
         this.ngaysinh = ngaysinh;
     }
 
@@ -95,5 +97,19 @@ public class SinhVien {
 
     public void setSdt(String sdt) {
         this.sdt = sdt;
+    }
+
+    public Object[] toObjectArray(){
+        Object[] objects={MSSV,malop,holot,ten,ngaysinh,sdt,manganh,noisinh,email};
+        return objects;
+    }
+
+    @Override
+    public String toString() {
+        return "SinhVien{" +
+                "MSSV=" + MSSV +
+                ", ten='" + ten + '\'' +
+                ", manganh='" + manganh + '\'' +
+                '}';
     }
 }

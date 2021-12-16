@@ -1,5 +1,6 @@
 package com.company.UIUX.FunctionPanel;
 
+import com.company.Class.lichsudangky;
 import com.company.Process.ProcessDKMH;
 import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 
@@ -80,9 +81,9 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
     }
 
-    private JLabel[] LeftLabels = {new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
+    private JLabel[] LeftLabels = {new JLabel("ID"), new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
             , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
-    private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(),
+    private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField(),
             new JTextField(), new JTextField(), new JTextField(), new JTextField()};
 
     private void LeftPanel() {
@@ -90,8 +91,14 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         int screenwidth = (int) (size.width);
         int screenheight = (int) (size.height);
         LeftTextfields[0].setEnabled(false);
+        LeftTextfields[1].setEnabled(false);
         LeftTextfields[2].setEnabled(false);
+        LeftTextfields[4].setEnabled(false);
         LeftTextfields[5].setEnabled(false);
+        LeftTextfields[6].setEnabled(false);
+        LeftTextfields[7].setEnabled(false);
+        LeftTextfields[8].setEnabled(false);
+
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
         for (int i = 0; i < 8; i++) {
@@ -138,10 +145,9 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                     int j = 0;
                     for (JTextField i : LeftTextfields) {
                         int a = MainTable.convertRowIndexToModel(MainTable.getSelectedRow());
-                        System.out.println(a);
                         i.setText(MainTable.getValueAt(a, j++).toString());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -149,18 +155,36 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
 
     }
 
+    private void updatelsdk() {
+        try {
+            String ID = LeftTextfields[0].getText();
+            String NMH = LeftTextfields[3].getText();
+            if (ID.trim() != "" && NMH.trim() != "") {
+                lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(NMH));
+                processDKMH.updatelsdk(ls);
+
+            } else {
+                if (ID == "")
+                    JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
+                else JOptionPane.showMessageDialog(this, "NHập mã môn học cần sửa đổi");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Mã nhóm môn học phải là số!");
+        }
+    }
+
     //End Init Panel
     //Start Event
     @Override
     public void actionPerformed(ActionEvent b) {
         if (b.getSource() == add) {
-            new DangkimonhocFrame();
+            new DangkimonhocFrame(processDKMH);
         }
         if (b.getSource() == update) {
-            System.out.println("hiih");
+            updatelsdk();
         }
         if (b.getSource() == reload) {
-            System.out.println("hiih");
+            loadTable();
         }
     }
     //End Event

@@ -1,10 +1,13 @@
 package com.company.DatabaseConnection;
 
+import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
     private String URL="jdbc:mysql://snooby.ddns.net:3306/cnpm";
@@ -47,7 +50,7 @@ public class Database {
 
     public List<lichsudangky> getListLSDK() {
         List<lichsudangky> list = new ArrayList<lichsudangky>();
-        String SQL = "SELECT s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
+        String SQL = "SELECT l.ID, s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
                 "FROM lichsudangky l, sinhvien s, nhomlophoc n,hocphan h " +
                 "WHERE l.MSSV=s.MSSV and l.Manhomlop=n.Manhomlop and l.MMH=h.MMH";
         //System.out.println(SQL);
@@ -55,7 +58,7 @@ public class Database {
         try {
             int i = 0;
             while (rs.next()) {
-                Object ls = rs.getObject(i++);
+                lichsudangky ls=new lichsudangky(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getInt(7),rs.getString(8),rs.getDate(9));
                 list.add((lichsudangky) ls);
             }
             return list;
@@ -64,12 +67,40 @@ public class Database {
             return list;
         }
     }
-
+    public List<SinhVien> getListQLSV() {
+        List<SinhVien> list = new ArrayList<SinhVien>();
+        String SQL = "SELECT * " +
+                "FROM  sinhvien ";
+        //System.out.println(SQL);
+        ResultSet rs = getResultsetbySQL(SQL);
+        try {
+            while (rs.next()) {
+                SinhVien sv = new SinhVien(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getDate(5),
+                        rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
+                list.add(sv);
+            }
+            return list;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return list;
+        }
+    }
     public void closedb() {
         try {
             conn.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+    public void updatelsdk(lichsudangky ls){
+        String query = ("UPDATE lichsudangky SET Manhomlop=? WHERE ID=?");
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, ls.getManhomlop());
+            pstmt.setInt(2, ls.getID());
+            pstmt.executeUpdate();
+        }
+        catch (SQLException ex) {
+            // Exception handling
         }
     }
 }

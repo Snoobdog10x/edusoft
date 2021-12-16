@@ -1,5 +1,7 @@
 package com.company.UIUX.Dangkimonhoc;
 
+import com.company.Process.ProcessDKMH;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,30 +9,24 @@ public class DangkimonhocFrame extends JFrame {
     private int framewidth;
     private int frameheight;
     private JPanel MainPanel;
-
-    public DangkimonhocFrame() {
-        init();
+    public DangkimonhocFrame(ProcessDKMH processDKMH) {
+        init(processDKMH);
     }
 
-    private void init() {
+    private void init(ProcessDKMH processDKMH) {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int screenwidth = size.width;
         int screenheight = size.height;
         framewidth=(int) (screenwidth * 0.3);
         frameheight=(int) (screenheight * 0.5);
-        setLayout(new BorderLayout());
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        add(processDKMH.getsinhvien());
         setSize(framewidth,frameheight);
-        initMainpanel();
         centreWindow();
         setBackground(Color.blue);
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }
-
-    private void initMainpanel() {
-        MainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        add(MainPanel);
     }
 
     public void centreWindow() {
