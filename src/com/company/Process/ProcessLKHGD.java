@@ -1,39 +1,55 @@
 package com.company.Process;
 
-import com.company.Class.lichsudangky;
-import com.company.Class.lichsudangky;
-import com.company.DatabaseConnection.Database;
+import com.company.Class.KHGD;
+import com.company.Class.NhomLopPhongHoc;
+import com.company.Class.VienChucNhomLop;
+import com.company.DatabaseConnection.DatabaseKHGD;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class ProcessLKHGD {
-    private List<lichsudangky> lsdk;
+    private List<KHGD> lsKHGD;
     public ProcessLKHGD(){
     }
-    private void loadlsdk(){
-        Database db=new Database();
-        lsdk=db.getListLSDK();
+    private void loadlsKHGD(){
+        DatabaseKHGD db= new DatabaseKHGD();
+        lsKHGD=db.getKHGD();
+        db.closedb();
     }
-    public DefaultTableModel reloadTableModel(DefaultTableModel model, int rowcount){
-        loadlsdk();
-        for (int i = rowcount; i > 0; i--) {
-            model.removeRow(0);
-        }
-        for(lichsudangky i:lsdk){
-            Object[] objects=i.toObjectArray();
-            model.addRow(objects);
-        }
-        return model;
-    }
+
     public DefaultTableModel loadTableModel(){
-        loadlsdk();
-        String[] col = new String[]{"Mã GV","Tên Giảng Viên","Mã MH","Tên Môn Học","Mã học phần", "Nhóm", "TH"};
+        loadlsKHGD();
+        String[] col = new String[]{"Họ lót","Tên GV","Mã nhóm lớp","Nhóm","Thực hành","Mã môn Học",
+                "Số lượng ĐK","Số lượng tkb"};
         DefaultTableModel defaultTableModel=new DefaultTableModel(col,0);
-        for(lichsudangky i:lsdk){
+        for(KHGD i:lsKHGD){
             Object[] objects=i.toObjectArray();
             defaultTableModel.addRow(objects);
         }
         return defaultTableModel;
     }
+
+    public DefaultTableModel reloadTableModel(DefaultTableModel model, int rowcount){
+        loadlsKHGD();
+        for (int i = rowcount; i > 0; i--) {
+            model.removeRow(0);
+        }
+        for(KHGD i:lsKHGD){
+            Object[] objects=i.toObjectArray();
+            model.addRow(objects);
+        }
+        return model;
+    }
+    public boolean addVCNL(VienChucNhomLop VCNL){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.addVCNL(VCNL);
+        return check;
+    }
+    public boolean addNLPH(NhomLopPhongHoc NLPH){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.addNLPH(NLPH);
+        return check;
+    }
+
 }
