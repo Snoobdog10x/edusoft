@@ -34,6 +34,18 @@ public class Database {
         }
     }
 
+    public int updatetoDatabasebySQL(String SQL){
+        try {
+            Statement stmt = null;
+            stmt = conn.createStatement();
+            int rowcount = stmt.executeUpdate(SQL);
+            return rowcount;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return 0;
+        }
+    }
+
     public List<lichsudangky> getListLSDK() {
         List<lichsudangky> list = new ArrayList<lichsudangky>();
         String SQL = "SELECT s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
