@@ -1,5 +1,6 @@
 package com.company.DatabaseConnection;
 
+import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
 import com.company.Class.vienchuc;
 
@@ -84,7 +85,24 @@ public class Database {
             return list;
         }
     }
-
+    public List<SinhVien> getListQLSV() {
+        List<SinhVien> list = new ArrayList<SinhVien>();
+        String SQL = "SELECT * " +
+                "FROM  sinhvien ";
+        //System.out.println(SQL);
+        ResultSet rs = getResultsetbySQL(SQL);
+        try {
+            while (rs.next()) {
+                SinhVien sv = new SinhVien(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getDate(5),
+                        rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
+                list.add(sv);
+            }
+            return list;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return list;
+        }
+    }
     public void closedb() {
         try {
             conn.close();
