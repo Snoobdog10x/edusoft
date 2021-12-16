@@ -23,6 +23,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
     private JButton add = new JButton("Thêm môn học");
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật môn học");
+    private JButton clear = new JButton("");
     private JTable MainTable;
     private JScrollPane MainScroll;
     private TableRowSorter<TableModel> rowSorter;

@@ -8,22 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private String URL="jdbc:mysql://localhost:3306/cnpm";
+    private String URL="jdbc:mysql://snooby.ddns.net:3306/cnpm";
     private String User="root";
-    private String pass="";
+    private String pass="thanhanh";
     private Connection conn;
 
     public Database(){
         connectdb();
     }
-    private void connectdb(){
+    public void connectdb(){
         try{
             conn= DriverManager.getConnection(URL,User,pass);
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-    private ResultSet getResultsetbySQL(String SQL){
+    public ResultSet getResultsetbySQL(String SQL){
         try {
             Statement stmt = null;
             stmt = conn.createStatement();
@@ -32,6 +32,17 @@ public class Database {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;
+        }
+    }
+    public int updatetoDatabasebySQL(String SQL){
+        try {
+            Statement stmt = null;
+            stmt = conn.createStatement();
+            int rowcount = stmt.executeUpdate(SQL);
+            return rowcount;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return 0;
         }
     }
     public List<vienchuc> getListVC() {
