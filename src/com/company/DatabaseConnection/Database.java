@@ -2,7 +2,6 @@ package com.company.DatabaseConnection;
 
 import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
-import com.company.Class.vienchuc;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,26 +47,7 @@ public class Database {
             return 0;
         }
     }
-    public List<vienchuc> getListVC() {
-        List<vienchuc> listVC = new ArrayList<vienchuc>();
-        String SQL = "SELECT * " +
-                "FROM vienchuc " ;
-        //System.out.println(SQL);
-        ResultSet rs = getResultsetbySQL(SQL);
-        try {
-            int i = 0;
-            while (rs.next()) {
-                Object vc = rs.getObject(i++);
-                System.out.println(vc);
-                System.out.println("vienchucla");
-                listVC.add((vienchuc) vc);
-            }
-            return listVC;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return listVC;
-        }
-    }
+
     public List<lichsudangky> getListLSDK() {
         List<lichsudangky> list = new ArrayList<lichsudangky>();
         String SQL = "SELECT l.ID, s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
