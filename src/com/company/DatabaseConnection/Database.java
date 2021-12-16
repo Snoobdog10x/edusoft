@@ -23,7 +23,7 @@ public class Database {
             throwables.printStackTrace();
         }
     }
-    private ResultSet getResultsetbySQL(String SQL){
+    public ResultSet getResultsetbySQL(String SQL){
         try {
             Statement stmt = null;
             stmt = conn.createStatement();
