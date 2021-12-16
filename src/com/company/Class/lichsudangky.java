@@ -86,7 +86,10 @@ public class lichsudangky {
     public void setNgaydangki(Date ngaydangki) {
         this.ngaydangki = ngaydangki;
     }
-
+    public Object[] toObjectArray(){
+        Object[] objects={MSSV,ten,manhomlop,Nhom,TH,MMH,tenmonhoc,ngaydangki};
+        return objects;
+    }
     @Override
     public String toString() {
         return "lichsudangky{" +
