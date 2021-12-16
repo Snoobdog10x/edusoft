@@ -108,14 +108,8 @@ public class SinhVien {
     public String toString() {
         return "SinhVien{" +
                 "MSSV=" + MSSV +
-                ", malop='" + malop + '\'' +
-                ", holot='" + holot + '\'' +
                 ", ten='" + ten + '\'' +
-                ", ngaysinh=" + ngaysinh +
                 ", manganh='" + manganh + '\'' +
-                ", noisinh='" + noisinh + '\'' +
-                ", email='" + email + '\'' +
-                ", sdt='" + sdt + '\'' +
                 '}';
     }
 }

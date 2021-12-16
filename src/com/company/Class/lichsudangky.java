@@ -3,6 +3,7 @@ package com.company.Class;
 import java.sql.Date;
 
 public class lichsudangky {
+    private int ID;
     private int MSSV;
     private String ten;
     private int manhomlop;
@@ -13,6 +14,18 @@ public class lichsudangky {
     private Date ngaydangki;
 
     public lichsudangky(int MSSV, String ten, int manhomlop, String nhom, String TH, int MMH, String tenmonhoc, Date ngaydangki) {
+        this.MSSV = MSSV;
+        this.ten = ten;
+        this.manhomlop = manhomlop;
+        Nhom = nhom;
+        this.TH = TH;
+        this.MMH = MMH;
+        this.tenmonhoc = tenmonhoc;
+        this.ngaydangki = ngaydangki;
+    }
+
+    public lichsudangky(int ID, int MSSV, String ten, int manhomlop, String nhom, String TH, int MMH, String tenmonhoc, Date ngaydangki) {
+        this.ID = ID;
         this.MSSV = MSSV;
         this.ten = ten;
         this.manhomlop = manhomlop;
@@ -65,6 +78,14 @@ public class lichsudangky {
 
     public int getMMH() {
         return MMH;
+    }
+
+    public lichsudangky(int ID,int manhomlop) {
+        this.ID = ID;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public void setMMH(int MMH) {
