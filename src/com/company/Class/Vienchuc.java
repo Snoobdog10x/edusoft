@@ -1,19 +1,21 @@
 package com.company.Class;
 
-public class vienchuc {
-    private String MVC;
+import java.sql.Date;
+
+public class Vienchuc {
+    private int MVC;
     private String loaivc;
     private String ten;
     private String holot;
     private String sdt;
-    private String ngaysinh;
+    private Date ngaysinh;
     private String noisinh;
     private String email;
 
-    public vienchuc() {
+    public Vienchuc() {
     }
 
-    public vienchuc(String MVC, String loaivc, String ten, String holot, String sdt, String ngaysinh, String noisinh, String email) {
+    public Vienchuc(int MVC, String loaivc, String ten, String holot, String sdt, Date ngaysinh, String noisinh, String email) {
         this.MVC = MVC;
         this.loaivc = loaivc;
         this.ten = ten;
@@ -24,11 +26,22 @@ public class vienchuc {
         this.email = email;
     }
 
-    public String getMVC() {
+    public Vienchuc(String loaivc, String ten, String holot, String sdt, Date ngaysinh, String noisinh, String email) {
+        this.MVC = MVC;
+        this.loaivc = loaivc;
+        this.ten = ten;
+        this.holot = holot;
+        this.sdt = sdt;
+        this.ngaysinh = ngaysinh;
+        this.noisinh = noisinh;
+        this.email = email;
+    }
+
+    public int getMVC() {
         return MVC;
     }
 
-    public void setMVC(String MVC) {
+    public void setMVC(int MVC) {
         this.MVC = MVC;
     }
 
@@ -64,11 +77,11 @@ public class vienchuc {
         this.sdt = sdt;
     }
 
-    public String getNgaysinh() {
+    public Date getNgaysinh() {
         return ngaysinh;
     }
 
-    public void setNgaysinh(String ngaysinh) {
+    public void setNgaysinh(Date ngaysinh) {
         this.ngaysinh = ngaysinh;
     }
 
