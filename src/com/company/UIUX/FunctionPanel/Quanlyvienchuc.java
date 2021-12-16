@@ -37,6 +37,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     private JButton add = new JButton("Thêm Viên chức");
     private JButton reload = new JButton("Tải Lại Bảng");
     private JButton update = new JButton("Cập nhật viên chức");
+    private JButton clear = new JButton("Làm mới miền nhập");
     private BorderLayout MainLayout = new BorderLayout();
     private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
@@ -62,14 +63,15 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     }
 
     private void loadTable() {
-        MainTable = new JTable(processQLVC.loadTableModel()){
-            public boolean editCellAt (int row, int column, java.util.EventObject e) {
+        MainTable = new JTable(processQLVC.loadTableModel()) {
+            public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 return false;
             }
 
         };
 
         rowSorter = new TableRowSorter<>(MainTable.getModel());
+        MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
     }
 
@@ -125,6 +127,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         int screenheight = (int) (size.height);
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
+        LeftTextfields[0].enable(false);
         for (int i = 0; i < 8; i++) {
             if (i == 5) {
                 UtilDateModel model = new UtilDateModel();
@@ -167,6 +170,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
                 LeftPanel.add(LeftTextfields[i]);
             }
         }
+        LeftPanel.add(clear);
     }
 
     private void CenterPanel() {
@@ -181,6 +185,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         update.addActionListener(this);
         reload.addActionListener(this);
         MainTable.addMouseListener(this);
+        clear.addActionListener(this);
     }
 
 
@@ -195,16 +200,19 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         if (e.getSource() == reload) {
             reloadtable();
         }
+        if (e.getSource() == clear) {
+            clearTextFields();
+        }
     }
 
     private void addAction() {
-        String loaivc ="";
-        String ten="";
-        String holot="";
-        String sdt="";
+        String loaivc = "";
+        String ten = "";
+        String holot = "";
+        String sdt = "";
         Date date = null;
-        String noisinh="";
-        String email="";
+        String noisinh = "";
+        String email = "";
 
         if (!LeftTextfields[0].getText().toString().equals("")) {
             JOptionPane.showMessageDialog(this, "Mã Viên chức phải để trống");
@@ -226,10 +234,10 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
             ten = LeftTextfields[2].getText().toString();
             holot = LeftTextfields[3].getText().toString();
             sdt = LeftTextfields[4].getText().toString();
-            date = new Date(datePicker.getModel().getYear()-1900,datePicker.getModel().getMonth(),datePicker.getModel().getDay());
+            date = new Date(datePicker.getModel().getYear() - 1900, datePicker.getModel().getMonth(), datePicker.getModel().getDay());
             noisinh = LeftTextfields[6].getText().toString();
             email = LeftTextfields[7].getText().toString();
-            System.out.println("date:" +datePicker.getModel().getYear());
+            System.out.println("date:" + datePicker.getModel().getYear());
         } catch (Exception ex) {
             System.out.println("xin loi");
         }
@@ -245,14 +253,14 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     }
 
     private void updateAction() {
-        int mavc =0;
-        String loaivc ="";
-        String ten="";
-        String holot="";
-        String sdt="";
+        int mavc = 0;
+        String loaivc = "";
+        String ten = "";
+        String holot = "";
+        String sdt = "";
         Date date = null;
-        String noisinh="";
-        String email="";
+        String noisinh = "";
+        String email = "";
         for (int i = 0; i < 8; i++) {
             if (LeftTextfields[i].getText().equals("")) {
                 if (i == 5) {
@@ -269,7 +277,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
             ten = LeftTextfields[2].getText().toString();
             holot = LeftTextfields[3].getText().toString();
             sdt = LeftTextfields[4].getText().toString();
-            date = new Date(datePicker.getModel().getYear()-1900,datePicker.getModel().getMonth(),datePicker.getModel().getDay());
+            date = new Date(datePicker.getModel().getYear() - 1900, datePicker.getModel().getMonth(), datePicker.getModel().getDay());
             noisinh = LeftTextfields[6].getText().toString();
             email = LeftTextfields[7].getText().toString();
 
@@ -278,13 +286,13 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         }
 
 
-        Vienchuc vienchuc = new Vienchuc(mavc,loaivc, ten, holot, sdt, date, noisinh, email);
+        Vienchuc vienchuc = new Vienchuc(mavc, loaivc, ten, holot, sdt, date, noisinh, email);
         boolean check = processQLVC.updateVC(vienchuc);
         if (check == true) {
-            JOptionPane.showMessageDialog(this, "Cập nhật thông tin môn học thành công");
+            JOptionPane.showMessageDialog(this, "Cập nhật thông tin Viên chức thành công");
 
         } else {
-            JOptionPane.showMessageDialog(this, "Cập nhật thông tin môn học thất bại (lỗi hệ thống)");
+            JOptionPane.showMessageDialog(this, "Cập nhật thông tin Viên chứcs thất bại (lỗi hệ thống)");
         }
         System.out.println("hiih");
     }
@@ -299,7 +307,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
             for (int i = 0; i < 8; i++) {
                 if (i == 5) {
                     String ngaysinh[] = MainTable.getValueAt(row, i).toString().split("-");
-                    this.datePicker.getModel().setDate(Integer.parseInt(ngaysinh[0]), Integer.parseInt(ngaysinh[1])-1, Integer.parseInt(ngaysinh[2]));
+                    this.datePicker.getModel().setDate(Integer.parseInt(ngaysinh[0]), Integer.parseInt(ngaysinh[1]) - 1, Integer.parseInt(ngaysinh[2]));
                     this.datePicker.getModel().setSelected(true);
                 } else
                     LeftTextfields[i].setText(MainTable.getValueAt(row, i).toString());
@@ -331,5 +339,15 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    private void clearTextFields() {
+        for (int i = 0; i < 8; i++) {
+            if (i == 5) {
+                //this.datePicker.getModel().setSelected();
+                this.datePicker.getModel().setSelected(false);
+            } else
+                LeftTextfields[i].setText("");
+        }
     }
 }
