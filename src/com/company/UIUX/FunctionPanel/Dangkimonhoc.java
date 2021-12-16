@@ -1,11 +1,15 @@
 package com.company.UIUX.FunctionPanel;
 
+import com.company.Main;
 import com.company.Process.ProcessDKMH;
 import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -16,7 +20,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     private BorderLayout Mainlayout = new BorderLayout();
     private JPanel LeftPanel;
     private JPanel CenterPanel;
-    public JPanel BottomPanel;
+    private JPanel BottomPanel;
     private JButton add = new JButton("Đăng ký môn học");
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật đăng kí");
@@ -32,19 +36,22 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
 
     //Start Init Panel
     private void init() {
-        loadTable();
-        addEvent();
         BottomPanel();
         LeftPanel();
+        loadTable();
         CenterPanel();
         setLayout(Mainlayout);
         add(LeftPanel, BorderLayout.WEST);
         add(CenterPanel, BorderLayout.CENTER);
+
+        addEvent();
     }
 
     private void loadTable() {
-        MainTable = new JTable(processDKMH.loadTableModel());
+        DefaultTableModel tableModel=processDKMH.loadTableModel();
+        MainTable = new JTable(tableModel);
         rowSorter = new TableRowSorter<>(MainTable.getModel());
+        MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
     }
 
@@ -60,34 +67,6 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         BottomPanel.add(reload);
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
-        jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                String text = jtfFilter.getText();
-
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                String text = jtfFilter.getText();
-
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
     }
 
     private void CenterPanel() {
@@ -119,19 +98,50 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         add.addActionListener(this);
         update.addActionListener(this);
         reload.addActionListener(this);
+        jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = jtfFilter.getText();
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = jtfFilter.getText();
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                System.out.println(MainTable.getValueAt(MainTable.getSelectedRow(), 0).toString());
+            }
+        });
     }
 
     //End Init Panel
     //Start Event
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == add) {
+    public void actionPerformed(ActionEvent b) {
+        if (b.getSource() == add) {
             new DangkimonhocFrame();
         }
-        if (e.getSource() == update) {
+        if (b.getSource() == update) {
             System.out.println("hiih");
         }
-        if (e.getSource() == reload) {
+        if (b.getSource() == reload) {
             System.out.println("hiih");
         }
     }
