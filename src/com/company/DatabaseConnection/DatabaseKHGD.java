@@ -57,7 +57,7 @@ public class DatabaseKHGD extends Database {
             } finally {
                 closedb();
             }
-
+        return true;
     }
 
 }
