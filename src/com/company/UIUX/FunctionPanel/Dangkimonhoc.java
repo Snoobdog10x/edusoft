@@ -138,7 +138,6 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                     int j = 0;
                     for (JTextField i : LeftTextfields) {
                         int a = MainTable.convertRowIndexToModel(MainTable.getSelectedRow());
-                        System.out.println(a);
                         i.setText(MainTable.getValueAt(a, j++).toString());
                     }
                 }catch (Exception e){
