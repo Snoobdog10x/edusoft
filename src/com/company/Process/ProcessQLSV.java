@@ -1,8 +1,10 @@
 package com.company.Process;
 
+import com.company.Class.HocPhan;
 import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
 import com.company.DatabaseConnection.Database;
+import com.company.DatabaseConnection.MonHocDatabase;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -15,6 +17,11 @@ public class ProcessQLSV {
         Database db=new Database();
         qlsv=db.getListQLSV();
         db.closedb();
+    }
+    public boolean addsinhvien(SinhVien sv){
+        Database db = new Database();
+        boolean check = db.addsv(sv);
+        return check;
     }
     public DefaultTableModel loadTableModel(){
         loadqlsv();

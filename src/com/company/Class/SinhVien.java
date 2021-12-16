@@ -15,7 +15,7 @@ public class SinhVien {
 
     public SinhVien(){}
 
-    public SinhVien(int MSSV, String malop, String holot, String ten, Date ngaysinh, String manganh, String noisinh, String email, String sdt) {
+    public SinhVien(int MSSV, String malop, String holot, String ten, Date ngaysinh, String sdt ,String manganh, String noisinh, String email) {
         this.MSSV = MSSV;
         this.malop = malop;
         this.holot = holot;
