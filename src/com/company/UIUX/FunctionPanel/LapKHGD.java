@@ -1,88 +1,36 @@
 package com.company.UIUX.FunctionPanel;
 
-import com.company.UIUX.MainUIPanel.TopMenuBar;
+import com.company.Class.HocPhan;
+import com.company.Process.ProcessLKHGD;
+import com.company.Process.ProcessQLMH;
+
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LapKHGD extends JPanel {
-    private JPanel LeftPanel, CenterPanel, TopPanel, BottomPanel;
-    private JTable TableKHGD;
-    private JButton[] northButtonArray = {new JButton("DS Dữ liệu học kì"), new JButton("")};
-    private JLabel[] LeftLabelArray = {new JLabel("Mã học phần"), new JLabel("Tên nhóm lớp")
-            , new JLabel("Tên môn học"), new JLabel("họ tên GV"), new JLabel("Số tiết")};
-    private JTextField[] LeftTextFieldArray = {new JTextField(), new JTextField()
-            , new JTextField(), new JTextField(), new JTextField()};
-    private JScrollPane sp = new JScrollPane(TableKHGD);
-    private DefaultTableModel model = new DefaultTableModel();
+    private BorderLayout Mainlayout = new BorderLayout();
+    private JPanel LeftPanel;
+    private JPanel CenterPanel;
+    public JPanel BottomPanel;
+    private JButton add = new JButton("thêm");
+    private JButton reload = new JButton("Tải lại bảng");
+    private JButton update = new JButton("Cập nhật kế hoạch");
+    private JTable MainTable;
+    private JScrollPane MainScroll;
+    private TableRowSorter<TableModel> rowSorter;
+    private ProcessQLMH processQLMH= new ProcessQLMH();
+    private BorderLayout MainLayout = new BorderLayout();
 
-    public LapKHGD() {
-        InitUI();
-    }
-
-    private void InitUI() {
-        TopPanel();
-        lefPanel();
-
-        add(TopPanel, BorderLayout.NORTH);
-        add(TableKHGD, BorderLayout.CENTER);
-        add(LeftPanel, BorderLayout.WEST);
+    public LapKHGD() {}
 
 
-    }
-
-    private void TopPanel() {
-        TopPanel = new JPanel(new FlowLayout());
-        for (int i = 0; i < northButtonArray.length; i++) {
-
-        }
-
-    }
-
-    private void lefPanel() {
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth = (int) (size.width);
-        int screenheight = (int) (size.height);
-        LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
-        for (int i = 0; i < 6; i++) {
-            LeftTextFieldArray[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
-            LeftPanel.add(LeftLabelArray[i]);
-            LeftPanel.add(LeftTextFieldArray[i]);
-        }
-    }
-
-    private void TableCenter(String titleTable[]) {
-        TableKHGD.setModel(model);
-        for (int i = 0; i < titleTable.length; i++) {
-            model.addColumn(titleTable[i]);
-        }
-    }
-
-    //Action Buton in north Panel.
-    private void ActionNortheButtonPanel(JButton a) {
-        if (a.getText().equalsIgnoreCase("DS Dữ liệu học kì")) {
-            String DLHKtable[] = {"Mã môn học", "Tên môn học", "Mã học phần", ""};
-            a.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    TableCenter(DLHKtable);
-                }
-            });
-        }
-        else if(a.getText().equalsIgnoreCase("")){
-            String x[]= {};
-            a.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                }
-            });
-        }
-
-    }
 }
 
