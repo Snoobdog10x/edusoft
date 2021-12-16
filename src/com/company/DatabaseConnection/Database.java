@@ -1,7 +1,7 @@
 package com.company.DatabaseConnection;
 
-import com.company.Class.HocPhan;
 import com.company.Class.lichsudangky;
+import com.company.Class.vienchuc;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ public class Database {
     private String User="root";
     private String pass="thanhanh";
     private Connection conn;
+
     public Database(){
         connectdb();
     }
@@ -33,7 +34,6 @@ public class Database {
             return null;
         }
     }
-
     public int updatetoDatabasebySQL(String SQL){
         try {
             Statement stmt = null;
@@ -45,7 +45,26 @@ public class Database {
             return 0;
         }
     }
-
+    public List<vienchuc> getListVC() {
+        List<vienchuc> listVC = new ArrayList<vienchuc>();
+        String SQL = "SELECT * " +
+                "FROM vienchuc " ;
+        //System.out.println(SQL);
+        ResultSet rs = getResultsetbySQL(SQL);
+        try {
+            int i = 0;
+            while (rs.next()) {
+                Object vc = rs.getObject(i++);
+                System.out.println(vc);
+                System.out.println("vienchucla");
+                listVC.add((vienchuc) vc);
+            }
+            return listVC;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return listVC;
+        }
+    }
     public List<lichsudangky> getListLSDK() {
         List<lichsudangky> list = new ArrayList<lichsudangky>();
         String SQL = "SELECT s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
@@ -54,10 +73,10 @@ public class Database {
         //System.out.println(SQL);
         ResultSet rs = getResultsetbySQL(SQL);
         try {
+            int i = 0;
             while (rs.next()) {
-                lichsudangky ls=new lichsudangky(rs.getInt(1),rs.getString(2),rs.getInt(3)
-                        ,rs.getString(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getDate(8));
-                list.add(ls);
+                Object ls = rs.getObject(i++);
+                list.add((lichsudangky) ls);
             }
             return list;
         } catch (SQLException throwables) {
