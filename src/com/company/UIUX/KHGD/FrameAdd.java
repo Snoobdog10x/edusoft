@@ -11,12 +11,13 @@ public class FrameAdd extends JFrame implements ActionListener {
     private String[] listNhom={""};
     private String[] listThucHanh={""};
     private String[] listMMH={""};
+    private String[] listMPH={""};
     private JLabel[] listLabel = {new JLabel("Số lượng đăng kí"),new JLabel("Số lượng thời khóa biểu")};
     private JTextField[] listSL= {new JTextField(),new JTextField()};
     private JComboBox[] listComboBox = {new JComboBox(listTen), new JComboBox(listMNL)
-            , new JComboBox(listNhom), new JComboBox(listThucHanh), new JComboBox(listMMH)};
+            , new JComboBox(listNhom), new JComboBox(listThucHanh), new JComboBox(listMMH),new JComboBox(listMPH)};
     private JLabel[] listLabelComboBox = {new JLabel("Họ và tên GV"), new JLabel("Mã nhóm lớp"),
-            new JLabel("Nhóm"), new JLabel("Thực hành"), new JLabel("Mã môn học")};
+            new JLabel("Nhóm"), new JLabel("Thực hành"), new JLabel("Mã môn học"),new JLabel("Phòng học")};
     private JButton commit= new JButton("Thêm");
     public FrameAdd() {
         uiux();
@@ -71,5 +72,8 @@ public class FrameAdd extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog( this,
                     "Notification");
         }
+    }
+    public static void main(String[]args){
+        new FrameAdd();
     }
 }

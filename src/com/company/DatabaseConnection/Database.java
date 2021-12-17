@@ -118,18 +118,18 @@ public class Database {
     }
     public List<KHGD> getKHGD() {
         List<KHGD> list = new ArrayList<>();
-        String SQL = "SELECT n.*,a.ten " +
-                "FROM nhomlophoc n, (SELECT v.ten, vn.Manhomlop " +
+        String SQL = "SELECT n.*,a.ten,nlph.MPH " +
+                "FROM nhomlophoc n,nhomlopphonghoc nlph, (SELECT v.ten, vn.Manhomlop " +
                 "FROM vienchuc v,vienchucnhomlop vn " +
                 "WHERE v.MVC=vn.MVC) a " +
-                "WHERE n.Manhomlop=a.Manhomlop ";
+                "WHERE n.Manhomlop=a.Manhomlop && n.Manhomlop=nlph.Manhomlop";
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             while (rs.next()) {
                 KHGD PlanTeching = new KHGD(rs.getString("holot"),
                         rs.getString("ten"), rs.getInt("Manhomlop"),
                         rs.getInt("nhom"), rs.getInt("thuchanh")
-                        , rs.getInt("MMH"), rs.getInt("SLdangki"), rs.getInt("SLtkb"));
+                        , rs.getInt("MMH"), rs.getInt("SLdangki"), rs.getInt("SLtkb"),rs.getInt("NPH"));
                 list.add(PlanTeching);
             }
             return list;
