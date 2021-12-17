@@ -1,17 +1,17 @@
 package com.company.Class;
 
 public class NhomLopHoc {
-    private String Manhomlop;
+    private int Manhomlop;
     private int Nhom;
     private int thuchanh;
-    private String MMH;
+    private int MMH;
     private int SLdangki;
     private int SLtkb;
 
     public NhomLopHoc() {
     }
 
-    public NhomLopHoc(String manhomlop, int nhom, int thuchanh, String MMH, int SLdangki, int SLtkb) {
+    public NhomLopHoc(int manhomlop, int nhom, int thuchanh, int MMH, int SLdangki, int SLtkb) {
         Manhomlop = manhomlop;
         Nhom = nhom;
         this.thuchanh = thuchanh;
@@ -20,11 +20,11 @@ public class NhomLopHoc {
         this.SLtkb = SLtkb;
     }
 
-    public String getManhomlop() {
+    public int getManhomlop() {
         return Manhomlop;
     }
 
-    public void setManhomlop(String manhomlop) {
+    public void setManhomlop(int manhomlop) {
         Manhomlop = manhomlop;
     }
 
@@ -44,11 +44,11 @@ public class NhomLopHoc {
         this.thuchanh = thuchanh;
     }
 
-    public String getMMH() {
+    public int getMMH() {
         return MMH;
     }
 
-    public void setMMH(String MMH) {
+    public void setMMH(int MMH) {
         this.MMH = MMH;
     }
 
@@ -67,4 +67,5 @@ public class NhomLopHoc {
     public void setSLtkb(int SLtkb) {
         this.SLtkb = SLtkb;
     }
+
 }

@@ -106,10 +106,8 @@ public class SinhVien {
 
     @Override
     public String toString() {
-        return "SinhVien{" +
-                "MSSV=" + MSSV +
-                ", ten='" + ten + '\'' +
-                ", manganh='" + manganh + '\'' +
-                '}';
+        return "MSSV: " + MSSV +
+                ", Tên Sinh Viên:'" + ten + '\'' +
+                ", Mã Ngành: '" + manganh + '\'';
     }
 }

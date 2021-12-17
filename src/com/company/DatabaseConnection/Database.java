@@ -1,5 +1,6 @@
 package com.company.DatabaseConnection;
 
+import com.company.Class.KHGD;
 import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
 
@@ -53,7 +54,6 @@ public class Database {
         String SQL = "SELECT l.ID, s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
                 "FROM lichsudangky l, sinhvien s, nhomlophoc n,hocphan h " +
                 "WHERE l.MSSV=s.MSSV and l.Manhomlop=n.Manhomlop and l.MMH=h.MMH";
-        //System.out.println(SQL);
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             int i = 0;
@@ -116,4 +116,27 @@ public class Database {
             // Exception handling
         }
     }
+    public List<KHGD> getKHGD() {
+        List<KHGD> list = new ArrayList<>();
+        String SQL = "SELECT n.*,a.ten " +
+                "FROM nhomlophoc n, (SELECT v.ten, vn.Manhomlop " +
+                "FROM vienchuc v,vienchucnhomlop vn " +
+                "WHERE v.MVC=vn.MVC) a " +
+                "WHERE n.Manhomlop=a.Manhomlop ";
+        ResultSet rs = getResultsetbySQL(SQL);
+        try {
+            while (rs.next()) {
+                KHGD PlanTeching = new KHGD(rs.getString("holot"),
+                        rs.getString("ten"), rs.getInt("Manhomlop"),
+                        rs.getInt("nhom"), rs.getInt("thuchanh")
+                        , rs.getInt("MMH"), rs.getInt("SLdangki"), rs.getInt("SLtkb"));
+                list.add(PlanTeching);
+            }
+            return list;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return list;
+        }
+    }
+
 }

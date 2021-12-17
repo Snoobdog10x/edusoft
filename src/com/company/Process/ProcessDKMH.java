@@ -1,8 +1,10 @@
 package com.company.Process;
 
+import com.company.Class.KHGD;
 import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
 import com.company.DatabaseConnection.Database;
+import com.company.DatabaseConnection.DatabaseKHGD;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,7 +13,7 @@ import java.util.List;
 public class ProcessDKMH {
     private List<lichsudangky> lsdk;
     private List<SinhVien> qlsv;
-
+    private List<KHGD> lsKHGD;
     public ProcessDKMH(){
     }
     private void loadlsdk(){
@@ -29,12 +31,15 @@ public class ProcessDKMH {
         qlsv=db.getListQLSV();
         db.closedb();
     }
-    public JComboBox getsinhvien(){
+    public DefaultTableModel loadTableModelsv(){
         loadqlsv();
-        JComboBox<SinhVien> comboBox=new JComboBox<SinhVien>();
-        for(SinhVien i:qlsv)
-        comboBox.addItem(i);
-        return comboBox;
+        String[] col = new String[]{"Mã SV","Mã lớp","Họ lót", "Tên", "Ngày sinh", "SĐT", "Mã ngành", "Nơi sinh","Email"};
+        DefaultTableModel defaultTableModel=new DefaultTableModel(col,0);
+        for(SinhVien i : qlsv){
+            Object[] objects=i.toObjectArray();
+            defaultTableModel.addRow(objects);
+        }
+        return defaultTableModel;
     }
     public DefaultTableModel loadTableModel(){
         loadlsdk();
@@ -50,5 +55,22 @@ public class ProcessDKMH {
         Database db=new Database();
         db.updatelsdk(ls);
         db.closedb();
+    }
+    private void loadlsKHGD(){
+        DatabaseKHGD db= new DatabaseKHGD();
+        lsKHGD=db.getKHGD();
+        db.closedb();
+    }
+
+    public DefaultTableModel loadTableModelKHGD(){
+        loadlsKHGD();
+        String[] col = new String[]{"Họ lót","Tên GV","Mã nhóm lớp","Nhóm","Thực hành","Mã môn Học",
+                "Số lượng ĐK","Số lượng tkb"};
+        DefaultTableModel defaultTableModel=new DefaultTableModel(col,0);
+        for(KHGD i:lsKHGD){
+            Object[] objects=i.toObjectArray();
+            defaultTableModel.addRow(objects);
+        }
+        return defaultTableModel;
     }
 }

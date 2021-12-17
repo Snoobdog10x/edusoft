@@ -61,11 +61,12 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     }
 
     private JTextField jtfFilter = new JTextField();
+
     private void BottomPanel() {
-        Dimension size= Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth= (int) (size.width);
-        int screenheight= (int) (size.height);
-        jtfFilter.setPreferredSize(new Dimension((int) (screenwidth*0.14), (int) (screenheight*0.02)));
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenwidth = (int) (size.width);
+        int screenheight = (int) (size.height);
+        jtfFilter.setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
         BottomPanel = new JPanel();
         BottomPanel.add(add);
         BottomPanel.add(update);
@@ -84,25 +85,17 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     private JLabel[] LeftLabels = {new JLabel("ID"), new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
             , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
     private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField(),
-            new JTextField(), new JTextField(), new JTextField(), new JTextField()};
+            new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField()};
 
     private void LeftPanel() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int screenwidth = (int) (size.width);
         int screenheight = (int) (size.height);
-        LeftTextfields[0].setEnabled(false);
-        LeftTextfields[1].setEnabled(false);
-        LeftTextfields[2].setEnabled(false);
-        LeftTextfields[4].setEnabled(false);
-        LeftTextfields[5].setEnabled(false);
-        LeftTextfields[6].setEnabled(false);
-        LeftTextfields[7].setEnabled(false);
-        LeftTextfields[8].setEnabled(false);
-
         LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < LeftLabels.length; i++) {
             LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
+            if(i!=3) LeftTextfields[i].setEnabled(false);
             LeftPanel.add(LeftLabels[i]);
             LeftPanel.add(LeftTextfields[i]);
         }
@@ -138,10 +131,9 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+        MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 try {
-
                     int j = 0;
                     for (JTextField i : LeftTextfields) {
                         int a = MainTable.convertRowIndexToModel(MainTable.getSelectedRow());
@@ -159,15 +151,16 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         try {
             String ID = LeftTextfields[0].getText();
             String NMH = LeftTextfields[3].getText();
-            if (ID.trim() != "" && NMH.trim() != "") {
-                lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(NMH));
-                processDKMH.updatelsdk(ls);
-
-            } else {
-                if (ID == "")
-                    JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
-                else JOptionPane.showMessageDialog(this, "NHập mã môn học cần sửa đổi");
+            if (ID.trim() != "" && ID != null){
+                JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
+                return;
             }
+            if(NMH.trim() != "" && NMH != null) {
+                JOptionPane.showMessageDialog(this, "Nhập mã môn học cần sửa đổi");
+            return;
+            }
+            lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(NMH));
+            processDKMH.updatelsdk(ls);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Mã nhóm môn học phải là số!");
         }
