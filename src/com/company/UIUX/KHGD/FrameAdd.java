@@ -1,5 +1,6 @@
 package com.company.UIUX.KHGD;
 
+import com.company.Class.Vienchuc;
 import com.company.Process.ProcessLKHGD;
 
 import javax.swing.*;
@@ -72,6 +73,8 @@ public class FrameAdd extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==commit){
+            Vienchuc vc = new Vienchuc();
+
             JOptionPane.showMessageDialog( this,
                     "Notification");
         }
