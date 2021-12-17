@@ -1,6 +1,7 @@
 package com.company.UIUX.FunctionPanel;
 
 import com.company.Class.lichsudangky;
+import com.company.Main;
 import com.company.Process.ProcessDKMH;
 import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
 
@@ -47,7 +48,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         addEvent();
     }
 
-    private void loadTable() {
+    public void loadTable() {
         DefaultTableModel tableModel = processDKMH.loadTableModel();
         MainTable = new JTable(tableModel) {
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -58,6 +59,9 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         rowSorter = new TableRowSorter<>(MainTable.getModel());
         MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
+    }
+    public void reloadtable() {
+        MainTable.setModel(processDKMH.reloadTableModel((DefaultTableModel) MainTable.getModel(), MainTable.getRowCount()));
     }
 
     private JTextField jtfFilter = new JTextField();
@@ -151,16 +155,23 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         try {
             String ID = LeftTextfields[0].getText();
             String NMH = LeftTextfields[3].getText();
-            if (ID.trim() != "" && ID != null){
+            if (ID.trim() == "" || ID == null){
                 JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
                 return;
             }
-            if(NMH.trim() != "" && NMH != null) {
+            if(NMH.trim() == "" || NMH == null) {
                 JOptionPane.showMessageDialog(this, "Nhập mã môn học cần sửa đổi");
             return;
             }
             lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(NMH));
-            processDKMH.updatelsdk(ls);
+            int value= processDKMH.updatelsdk(ls);
+            if(value>0){
+                JOptionPane.showMessageDialog(this, "cập nhật thành công");
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "cập nhật không thành công");
+            }
+            reloadtable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Mã nhóm môn học phải là số!");
         }
@@ -171,13 +182,13 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent b) {
         if (b.getSource() == add) {
-            new DangkimonhocFrame(processDKMH);
+            new DangkimonhocFrame(processDKMH,this);
         }
         if (b.getSource() == update) {
             updatelsdk();
         }
         if (b.getSource() == reload) {
-            loadTable();
+            reloadtable();
         }
     }
     //End Event
