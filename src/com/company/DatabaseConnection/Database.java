@@ -67,37 +67,6 @@ public class Database {
             return list;
         }
     }
-    public List<SinhVien> getListQLSV() {
-        List<SinhVien> list = new ArrayList<SinhVien>();
-        String SQL = "SELECT * " +
-                "FROM  sinhvien ";
-        //System.out.println(SQL);
-        ResultSet rs = getResultsetbySQL(SQL);
-        try {
-            while (rs.next()) {
-                SinhVien sv = new SinhVien(rs.getInt("MSSV"),rs.getString("malop"),rs.getString("holot"), rs.getString("ten"),rs.getDate("ngaysinh"),
-                        rs.getString("sdt"),rs.getString("manganh"),rs.getString("noisinh"),rs.getString("email"));
-                list.add(sv);
-            }
-            return list;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return list;
-        }
-    }
-    public boolean addsv(SinhVien sv){
-        boolean check = false;
-        List<SinhVien> list = new ArrayList<SinhVien>();
-        String SQL = "Insert into sinhvien(malop,holot,ten,ngaysinh,sdt,manganh,noisinh,email) " +
-                "values('" + sv.getMalop() + "','" + sv.getHolot() + "'," + sv.getTen() + "," + sv.getNgaysinh() +
-                "" + sv.getSdt()+ "," + sv.getManganh() + "," + sv.getNoisinh() + "," + sv.getEmail() +" ) ";
-        //System.out.println(SQL);
-        int row = updatetoDatabasebySQL(SQL);
-        if (row == 1) {
-            check = true;
-        }
-        return check;
-    }
     public void closedb() {
         try {
             conn.close();

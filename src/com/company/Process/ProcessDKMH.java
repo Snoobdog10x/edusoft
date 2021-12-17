@@ -3,6 +3,7 @@ package com.company.Process;
 import com.company.Class.SinhVien;
 import com.company.Class.lichsudangky;
 import com.company.DatabaseConnection.Database;
+import com.company.DatabaseConnection.SinhvienDatabase;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +26,7 @@ public class ProcessDKMH {
         db.closedb();
     }
     private void loadqlsv(){
-        Database db=new Database();
+        SinhvienDatabase db=new SinhvienDatabase();
         qlsv=db.getListQLSV();
         db.closedb();
     }
