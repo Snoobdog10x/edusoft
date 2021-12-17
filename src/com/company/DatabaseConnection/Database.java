@@ -11,22 +11,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Database {
-    private String URL="jdbc:mysql://snooby.ddns.net:3306/cnpm";
-    private String User="root";
-    private String pass="thanhanh";
+    private String URL = "jdbc:mysql://snooby.ddns.net:3306/cnpm";
+    private String User = "root";
+    private String pass = "thanhanh";
     private Connection conn;
 
-    public Database(){
+    public Database() {
         connectdb();
     }
-    public void connectdb(){
-        try{
-            conn= DriverManager.getConnection(URL,User,pass);
-        }catch (SQLException throwables) {
+
+    public void connectdb() {
+        try {
+            conn = DriverManager.getConnection(URL, User, pass);
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-    public ResultSet getResultsetbySQL(String SQL){
+
+    public ResultSet getResultsetbySQL(String SQL) {
         try {
             Statement stmt = null;
             stmt = conn.createStatement();
@@ -37,7 +39,8 @@ public class Database {
             return null;
         }
     }
-    public int updatetoDatabasebySQL(String SQL){
+
+    public int updatetoDatabasebySQL(String SQL) {
         try {
             Statement stmt = null;
             stmt = conn.createStatement();
@@ -58,7 +61,7 @@ public class Database {
         try {
             int i = 0;
             while (rs.next()) {
-                lichsudangky ls=new lichsudangky(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getInt(7),rs.getString(8),rs.getDate(9));
+                lichsudangky ls = new lichsudangky(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8), rs.getDate(9));
                 list.add((lichsudangky) ls);
             }
             return list;
@@ -67,6 +70,7 @@ public class Database {
             return list;
         }
     }
+
     public List<SinhVien> getListQLSV() {
         List<SinhVien> list = new ArrayList<SinhVien>();
         String SQL = "SELECT * " +
@@ -75,8 +79,8 @@ public class Database {
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             while (rs.next()) {
-                SinhVien sv = new SinhVien(rs.getInt("MSSV"),rs.getString("malop"),rs.getString("holot"), rs.getString("ten"),rs.getDate("ngaysinh"),
-                        rs.getString("sdt"),rs.getString("manganh"),rs.getString("noisinh"),rs.getString("email"));
+                SinhVien sv = new SinhVien(rs.getInt("MSSV"), rs.getString("malop"), rs.getString("holot"), rs.getString("ten"), rs.getDate("ngaysinh"),
+                        rs.getString("sdt"), rs.getString("manganh"), rs.getString("noisinh"), rs.getString("email"));
                 list.add(sv);
             }
             return list;
@@ -85,12 +89,13 @@ public class Database {
             return list;
         }
     }
-    public boolean addsv(SinhVien sv){
+
+    public boolean addsv(SinhVien sv) {
         boolean check = false;
         List<SinhVien> list = new ArrayList<SinhVien>();
         String SQL = "Insert into sinhvien(malop,holot,ten,ngaysinh,sdt,manganh,noisinh,email) " +
                 "values('" + sv.getMalop() + "','" + sv.getHolot() + "'," + sv.getTen() + "," + sv.getNgaysinh() +
-                "" + sv.getSdt()+ "," + sv.getManganh() + "," + sv.getNoisinh() + "," + sv.getEmail() +" ) ";
+                "" + sv.getSdt() + "," + sv.getManganh() + "," + sv.getNoisinh() + "," + sv.getEmail() + " ) ";
         //System.out.println(SQL);
         int row = updatetoDatabasebySQL(SQL);
         if (row == 1) {
@@ -98,6 +103,7 @@ public class Database {
         }
         return check;
     }
+
     public void closedb() {
         try {
             conn.close();
@@ -105,34 +111,31 @@ public class Database {
             throwables.printStackTrace();
         }
     }
-    public void updatelsdk(lichsudangky ls){
+
+    public void updatelsdk(lichsudangky ls) {
         String query = ("UPDATE lichsudangky SET Manhomlop=? WHERE ID=?");
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, ls.getManhomlop());
             pstmt.setInt(2, ls.getID());
             pstmt.executeUpdate();
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             // Exception handling
         }
     }
-    public List<KHGD> getKHGD() {
-        List<KHGD> list = new ArrayList<>();
-        String SQL = "SELECT n.*,a.ten,nlph.MPH " +
-                "FROM nhomlophoc n, nhomlopphonghoc nlph ,(SELECT v.ten, vn.Manhomlop " +
-                "FROM vienchuc v,vienchucnhomlop vn " +
-                "WHERE v.MVC=vn.MVC) a " +
-                "WHERE n.Manhomlop=a.Manhomlop && n.Manhomlop = nlph.Manhomlop";
+
+    public List<Object[]> getkhgd() {
+        List<Object[]> list = new ArrayList<>();
+        String SQL = "SELECT n.*,a.ten,nlph.MPH FROM (SELECT nl.*,hp.tenmonhoc,hp.sotinchi,hp.sotiet FROM nhomlophoc nl,hocphan hp WHERE nl.MMH=hp.MMH) n, nhomlopphonghoc nlph ,(SELECT v.ten, vn.Manhomlop FROM vienchuc v,vienchucnhomlop vn WHERE v.MVC=vn.MVC) a WHERE n.Manhomlop=a.Manhomlop && n.Manhomlop = nlph.Manhomlop && nlph.Manhomlop=a.Manhomlop";
         System.out.println(SQL);
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             int i = 0;
             while (rs.next()) {
-                KHGD PlanTeching = new KHGD(rs.getString("holot"),
-                        rs.getString("ten"), rs.getInt("Manhomlop"),
-                        rs.getInt("nhom"), rs.getInt("thuchanh")
-                        , rs.getInt("MMH"), rs.getInt("SLdangki"), rs.getInt("SLtkb"),rs.getInt("MPH"));
-                list.add(PlanTeching);
+                Object[] objects = {rs.getObject(1),rs.getObject(2),rs.getObject(3)
+                        ,rs.getObject(4),rs.getObject(5),rs.getObject(6)
+                        ,rs.getObject(7),rs.getObject(8),rs.getObject(9)
+                        ,rs.getObject(10),rs.getObject(11)};
+                list.add(objects);
             }
             return list;
         } catch (SQLException throwables) {
