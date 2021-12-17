@@ -35,33 +35,37 @@ public class DatabaseKHGD extends Database {
     }
 
     public boolean addVCNL(VienChucNhomLop VCNL) {
+        boolean check = false;
         try {
-            String sql = "INSERT INTO vienchunhomlop VALUES(?,?)";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, VCNL.getMVC());
-            stmt.setInt(2, VCNL.getManhomlop());
-            stmt.executeUpdate();
+            String sql = "INSERT INTO vienchunhomlop VALUES("+VCNL.getManhomlop()+","+VCNL.getMVC()+")";
+            int  a = updatetoDatabasebySQL(sql);
+            if(a==1){
+                check = true;
+                return check;
+            }
         } catch (Exception aC) {
             System.err.println(aC.getMessage());
         } finally {
             closedb();
         }
-        return true;
+        return check;
     }
 
     public boolean addNLPH(NhomLopPhongHoc NLPH) {
+        boolean check = false;
         try {
-            String sql = "INSERT INTO nhomlopphonghoc VALUES(?,?)";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, NLPH.getMaNhomLop());
-            stmt.setInt(2, NLPH.getMPH());
-            stmt.executeUpdate();
+            String sql = "INSERT INTO nhomlopphonghoc VALUES("+NLPH.getMaNhomLop()+","+NLPH.getMPH()+")";
+             int  a = updatetoDatabasebySQL(sql);
+             if(a==1){
+                 check = true;
+                 return check;
+             }
         } catch (Exception aC) {
             System.err.println(aC.getMessage());
         } finally {
             closedb();
         }
-        return true;
+        return check;
     }
 
     public ArrayList getListHoTenGV() {
