@@ -11,6 +11,11 @@ public class HocPhan {
     public HocPhan() {
     }
 
+    public HocPhan(int MMH, String tenmonhoc) {
+        this.MMH = MMH;
+        this.tenmonhoc = tenmonhoc;
+    }
+
     public HocPhan(int MMH, String tenmonhoc, String mabomon, int sotinchi, int sotiet, int sotietthuchanh) {
         this.MMH = MMH;
         this.tenmonhoc = tenmonhoc;
@@ -83,13 +88,6 @@ public class HocPhan {
 
     @Override
     public String toString() {
-        return "HocPhan{" +
-                "MMH='" + MMH + '\'' +
-                ", tenmonhoc='" + tenmonhoc + '\'' +
-                ", mabomon='" + mabomon + '\'' +
-                ", sotinchi=" + sotinchi +
-                ", sotiet=" + sotiet +
-                ", sotietthuchanh=" + sotietthuchanh +
-                '}';
+        return MMH +"-"+tenmonhoc;
     }
 }

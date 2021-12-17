@@ -3,9 +3,13 @@ package com.company.Class;
 public class PhongHoc {
     private String coSo, dayPhong, tenPhong;
     private int sucChua;
-    private String MPH;
+    private int MPH;
 
-    public PhongHoc(String coSo, String dayPhong, String tenPhong, int sucChua, String MPH) {
+    public PhongHoc(int MPH) {
+        this.MPH = MPH;
+    }
+
+    public PhongHoc(String coSo, String dayPhong, String tenPhong, int sucChua, int MPH) {
         this.coSo = coSo;
         this.dayPhong = dayPhong;
         this.tenPhong = tenPhong;
@@ -45,11 +49,16 @@ public class PhongHoc {
         this.sucChua = sucChua;
     }
 
-    public String getMPH() {
+    public int getMPH() {
         return MPH;
     }
 
-    public void setMPH(String MPH) {
+    public void setMPH(int MPH) {
         this.MPH = MPH;
+    }
+
+    @Override
+    public String toString() {
+        return MPH+ "";
     }
 }

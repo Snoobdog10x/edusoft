@@ -11,6 +11,18 @@ public class NhomLopHoc {
     public NhomLopHoc() {
     }
 
+    public NhomLopHoc(int manhomlop) {
+        Manhomlop = manhomlop;
+    }
+
+    public NhomLopHoc(int nhom, int thuchanh, int MMH, int SLdangki, int SLtkb) {
+        Nhom = nhom;
+        this.thuchanh = thuchanh;
+        this.MMH = MMH;
+        this.SLdangki = SLdangki;
+        this.SLtkb = SLtkb;
+    }
+
     public NhomLopHoc(int manhomlop, int nhom, int thuchanh, int MMH, int SLdangki, int SLtkb) {
         Manhomlop = manhomlop;
         Nhom = nhom;
