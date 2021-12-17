@@ -1,8 +1,14 @@
 package com.company.UIUX.FunctionPanel;
 
+import com.company.Class.HocPhan;
+import com.company.Class.SinhVien;
 import com.company.Process.ProcessQLSV;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -11,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 
 public class Quanlysinhvien extends JPanel implements ActionListener {
     private BorderLayout Mainlayout = new BorderLayout();
@@ -38,6 +45,7 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
         setLayout(Mainlayout);
         add(LeftPanel, BorderLayout.WEST);
         add(CenterPanel, BorderLayout.CENTER);
+        addEvent();
     }
 
     private void loadTable() {
@@ -46,7 +54,6 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 return false;
             }
-
         };
         rowSorter = new TableRowSorter<>(MainTable.getModel());
         MainTable.setRowSorter(rowSorter);
@@ -94,10 +101,82 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
     private void addEvent() {
         add.addActionListener(this);
         update.addActionListener(this);
+        jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = jtfFilter.getText();
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = jtfFilter.getText();
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                try {
+                    int j = 0;
+                    for (JTextField i : LeftTextfields) {
+                        int a = MainTable.convertRowIndexToModel(MainTable.getSelectedRow());
+                        i.setText(MainTable.getValueAt(a, j++).toString());
+                    }
+                }catch (Exception e){
+                }
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+    if(e.getSource()==add){
+        addaction();
     }
+    }
+    public void addaction(){
+        int MSSV = 0;
+        String malop;
+        String holot;
+        String ten;
+        Date ngaysinh;
+        String sdt;
+        String manganh;
+        String noisinh;
+        String email;
+        try {
+            malop = LeftTextfields[1].getText().toString();
+            holot = LeftTextfields[2].getText().toString();
+            ten = LeftTextfields[3].getText().toString();
+            ngaysinh = Date.valueOf(LeftTextfields[4].getText().toString());
+            sdt = LeftTextfields[5].getText().toString();
+            manganh = LeftTextfields[5].getText().toString();
+            noisinh = LeftTextfields[5].getText().toString();
+            email = LeftTextfields[5].getText().toString();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Số tín chỉ, số tiết, " );
+            return;
+        }
+        SinhVien sv = new SinhVien(MSSV,malop,holot,ten,ngaysinh,sdt,manganh,noisinh,email);
+        boolean check = processQLSV.addsinhvien(sv);
+        if (check == true) {
+            JOptionPane.showMessageDialog(this, "Thêm môn học thành công");
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm môn học thất bại  (lỗi hệ thống)");
+        }
+        System.out.println("hiih");
+    }
+
 }
