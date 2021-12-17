@@ -163,7 +163,6 @@ public class Database {
             statement.setInt(1,MSSV);
             statement.setInt(2,MNL);
             statement.setDate(3, new Date(Calendar.getInstance().getTime().getTime()));
-            System.out.println(statement);
             return statement.executeUpdate();
         }
         else {
