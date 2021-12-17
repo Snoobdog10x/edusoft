@@ -142,13 +142,13 @@ public class Database {
     }
 
     private boolean isDuplicate(int MSSV, int MMH) {
-        String SQL = "SELECT * FROM lichsudangky WHERE MSSV="+MSSV+" and MMH="+MMH;
+        String SQL = "select * \n" +
+                "from hocphan h, nhomlophoc n, lichsudangky l\n" +
+                "where h.MMH=n.MMH and l.Manhomlop=n.Manhomlop and l.MSSV="+MSSV+" and h.MMH="+MMH;
+        System.out.println(SQL);
         try {
             ResultSet rs=getResultsetbySQL(SQL);
-            if (rs.next()) {
-                return true;
-            }
-            return false;
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -157,13 +157,13 @@ public class Database {
 
     public int DKMH(int MSSV, int MMH, int MNL) throws SQLException {
         if(!isDuplicate(MSSV,MMH)){
-            String sql="Insert into lichsudangky (MSSV,MMH,Manhomlop,ngaydangki) " +
-                    "Values(?,?,?,?)";
+            String sql="Insert into lichsudangky (MSSV,Manhomlop,ngaydangki) " +
+                    "Values(?,?,?)";
             PreparedStatement statement=conn.prepareStatement(sql);
             statement.setInt(1,MSSV);
-            statement.setInt(2,MMH);
-            statement.setInt(3,MNL);
-            statement.setDate(4, new Date(Calendar.getInstance().getTime().getTime()));
+            statement.setInt(2,MNL);
+            statement.setDate(3, new Date(Calendar.getInstance().getTime().getTime()));
+            System.out.println(statement);
             return statement.executeUpdate();
         }
         else {

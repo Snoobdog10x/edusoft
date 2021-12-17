@@ -94,6 +94,7 @@ public class ProcessDKMH {
         Database db=new Database();
         try {
             int value=db.DKMH(mssv,mmh,mnl);
+            db.closedb();
             return value;
         } catch (SQLException e) {
             return -1;
