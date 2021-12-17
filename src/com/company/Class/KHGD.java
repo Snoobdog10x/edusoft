@@ -9,8 +9,9 @@ public class KHGD {
     private int MMH;
     private int SLDK;
     private int SLtkb;
+    private int MPH;
 
-    public KHGD(String holot, String tenGV, int maNhomLop, int nhom, int thucHanh, int MMH, int SLDK, int SLtkb) {
+    public KHGD(String holot, String tenGV, int maNhomLop, int nhom, int thucHanh, int MMH, int SLDK, int SLtkb, int MPH) {
         Holot = holot;
         TenGV = tenGV;
         this.maNhomLop = maNhomLop;
@@ -19,6 +20,7 @@ public class KHGD {
         this.MMH = MMH;
         this.SLDK = SLDK;
         this.SLtkb = SLtkb;
+        this.MPH = MPH;
     }
 
     public String getHolot() {
@@ -85,6 +87,14 @@ public class KHGD {
         this.SLtkb = SLtkb;
     }
 
+    public int getMPH() {
+        return MPH;
+    }
+
+    public void setMPH(int MPH) {
+        this.MPH = MPH;
+    }
+
     public Object[] toObjectArray() {
         Object[] objects = {Holot,
                 TenGV,
@@ -93,7 +103,7 @@ public class KHGD {
                 thucHanh,
                 MMH,
                 SLDK,
-                SLtkb};
+                SLtkb,MPH};
         return objects;
     }
 
@@ -108,6 +118,7 @@ public class KHGD {
                 ", MMH=" + MMH +
                 ", SLDK=" + SLDK +
                 ", SLtkb=" + SLtkb +
+                ", MPH=" + MPH +
                 '}';
     }
 }

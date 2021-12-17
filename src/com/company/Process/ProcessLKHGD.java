@@ -2,7 +2,6 @@ package com.company.Process;
 
 import com.company.Class.KHGD;
 import com.company.Class.NhomLopPhongHoc;
-import com.company.Class.SinhVien;
 import com.company.Class.*;
 import com.company.DatabaseConnection.DatabaseKHGD;
 
@@ -24,7 +23,7 @@ public class ProcessLKHGD {
     public DefaultTableModel loadTableModel(){
         loadlsKHGD();
         String[] col = new String[]{"Họ lót","Tên GV","Mã nhóm lớp","Nhóm","Thực hành","Mã môn Học",
-                "Số lượng ĐK","Số lượng tkb"};
+                "Số lượng ĐK","Số lượng tkb","Phòng học"};
         DefaultTableModel defaultTableModel=new DefaultTableModel(col,0);
         for(KHGD i:lsKHGD){
             Object[] objects=i.toObjectArray();
