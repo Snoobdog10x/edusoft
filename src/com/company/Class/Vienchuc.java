@@ -26,6 +26,12 @@ public class Vienchuc {
         this.email = email;
     }
 
+    public Vienchuc(int MVC, String holot,String ten) {
+        this.MVC = MVC;
+        this.ten = ten;
+        this.holot = holot;
+    }
+
     public Vienchuc(String loaivc, String ten, String holot, String sdt, Date ngaysinh, String noisinh, String email) {
         this.MVC = MVC;
         this.loaivc = loaivc;
@@ -100,22 +106,17 @@ public class Vienchuc {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Object[] toObjectArray(){
-        Object[] objects={ MVC, loaivc, ten, holot, sdt, ngaysinh, noisinh, email};
+
+    public Object[] toObjectArray() {
+        Object[] objects = {MVC, loaivc, ten, holot, sdt, ngaysinh, noisinh, email};
         return objects;
     }
 
     @Override
     public String toString() {
-        return "vienchuc{" +
-                "MVC='" + MVC + '\'' +
-                ", loaivc='" + loaivc + '\'' +
-                ", ten='" + ten + '\'' +
-                ", holot='" + holot + '\'' +
-                ", sdt='" + sdt + '\'' +
-                ", ngaysinh='" + ngaysinh + '\'' +
-                ", noisinh='" + noisinh + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return
+                "mã viên chức=" + MVC + "-" +
+                "" + holot  + " " + ten;
     }
+
 }

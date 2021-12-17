@@ -11,12 +11,13 @@ public class FrameUpdate extends JFrame implements ActionListener {
     private String[] listNhom={""};
     private String[] listThucHanh={""};
     private String[] listMMH={""};
+    private String[] listMPH={""};
     private JLabel[] listLabel = {new JLabel("Số lượng đăng kí"),new JLabel("Số lượng thời khóa biểu")};
     private JTextField[] listSL= {new JTextField(),new JTextField()};
     private JComboBox[] listComboBox = {new JComboBox(listTen), new JComboBox(listMNL)
-            , new JComboBox(listNhom), new JComboBox(listThucHanh), new JComboBox(listMMH)};
+            , new JComboBox(listNhom), new JComboBox(listThucHanh), new JComboBox(listMMH),new JComboBox(listMPH)};
     private JLabel[] listLabelComboBox = {new JLabel("Họ và tên GV"), new JLabel("Mã nhóm lớp"),
-            new JLabel("Nhóm"), new JLabel("Thực hành"), new JLabel("Mã môn học")};
+            new JLabel("Nhóm"), new JLabel("Thực hành"), new JLabel("Mã môn học"),new JLabel("Phòng học")};
     private JButton update= new JButton("Cập nhật");
     public FrameUpdate() {
         uiux();
@@ -61,12 +62,16 @@ public class FrameUpdate extends JFrame implements ActionListener {
         int y = (int) ((dimension.getHeight() - getHeight()) / 2);
         setLocation(x, y);
     }
-    public static void main(String []args){
-        new FrameUpdate();
-    }
-    private void addEvent() {
-        update.addActionListener(this);
-
+    public void setJComboBox(String[] a){
+        for(int i = 0;i<listComboBox.length+2;i++){
+            listComboBox[i].setSelectedItem(a[i]);
+            if(i>=1 && i<5){
+                listComboBox[i].enable(false);
+            }
+            if(i >= 5){
+                listSL[i].setText(a[i]);
+            }
+        }
     }
     @Override
     public void actionPerformed(ActionEvent e) {

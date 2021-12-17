@@ -13,17 +13,6 @@ public class lichsudangky {
     private String tenmonhoc;
     private Date ngaydangki;
 
-    public lichsudangky(int MSSV, String ten, int manhomlop, String nhom, String TH, int MMH, String tenmonhoc, Date ngaydangki) {
-        this.MSSV = MSSV;
-        this.ten = ten;
-        this.manhomlop = manhomlop;
-        Nhom = nhom;
-        this.TH = TH;
-        this.MMH = MMH;
-        this.tenmonhoc = tenmonhoc;
-        this.ngaydangki = ngaydangki;
-    }
-
     public lichsudangky(int ID, int MSSV, String ten, int manhomlop, String nhom, String TH, int MMH, String tenmonhoc, Date ngaydangki) {
         this.ID = ID;
         this.MSSV = MSSV;
@@ -80,8 +69,9 @@ public class lichsudangky {
         return MMH;
     }
 
-    public lichsudangky(int ID,int manhomlop) {
+    public lichsudangky(int ID, int manhomlop) {
         this.ID = ID;
+        this.manhomlop = manhomlop;
     }
 
     public int getID() {
@@ -107,10 +97,12 @@ public class lichsudangky {
     public void setNgaydangki(Date ngaydangki) {
         this.ngaydangki = ngaydangki;
     }
-    public Object[] toObjectArray(){
-        Object[] objects={MSSV,ten,manhomlop,Nhom,TH,MMH,tenmonhoc,ngaydangki};
+
+    public Object[] toObjectArray() {
+        Object[] objects = {ID, MSSV, ten, manhomlop, Nhom, TH, MMH, tenmonhoc, ngaydangki};
         return objects;
     }
+
     @Override
     public String toString() {
         return "lichsudangky{" +

@@ -39,7 +39,11 @@ public class LapKHGD extends JPanel implements ActionListener{
         add(CenterPanel, BorderLayout.CENTER);
     }
     private void loadTable() {
-        MainTable = new JTable(ProcessLKHGD.loadTableModel());
+        MainTable = new JTable(ProcessLKHGD.loadTableModel()){
+            public boolean editCellAt (int row, int column, java.util.EventObject e) {
+                return false;
+            }
+        };
         rowSorter = new TableRowSorter<>(MainTable.getModel());
         MainScroll = new JScrollPane(MainTable);
     }
@@ -108,12 +112,23 @@ public class LapKHGD extends JPanel implements ActionListener{
         }
     }
     private void reloadtable(){
-        MainTable.setModel(ProcessLKHGD.reloadTableModel((DefaultTableModel) MainTable.getModel(),MainTable.getRowCount()));
+        MainTable.setModel(ProcessLKHGD.loadTableModel());
     }
     //End Event
     private void addAction(){
 
     }
-
+    private void clickTable() {
+        int row = MainTable.getSelectedRow();
+        FrameUpdate up = new FrameUpdate();
+        String[] a={};
+        if (row >= 0) {
+            for (int i = 0; i < 8; i++) {
+                a[i] = MainTable.getValueAt(row,i).toString();
+            }
+            up.setJComboBox(a);
+        }
+        System.out.println(row);
+    }
 }
 
