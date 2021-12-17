@@ -150,7 +150,11 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         });
 
     }
-
+    private void clearLeftText(){
+        for (JTextField i:LeftTextfields) {
+            i.setText("");
+        }
+    }
     private void updatelsdk() {
         try {
             String ID = LeftTextfields[0].getText();
@@ -171,6 +175,8 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             else{
                 JOptionPane.showMessageDialog(this, "cập nhật không thành công");
             }
+            clearLeftText();
+            MainTable.getSelectionModel().clearSelection();
             reloadtable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Mã nhóm môn học phải là số!");
