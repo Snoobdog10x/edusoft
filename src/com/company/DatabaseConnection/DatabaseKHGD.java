@@ -79,7 +79,7 @@ public class DatabaseKHGD extends Database {
             return arrayList;
         }
     }
-    public ArrayList getListMVCHoTenGV() {
+    /*public ArrayList getListMVCHoTenGV() {
         ArrayList<Vienchuc> arrayList = new ArrayList<Vienchuc>();
         String sql = "select * from vienchuc";
         ResultSet rs = getResultsetbySQL(sql);
@@ -93,7 +93,7 @@ public class DatabaseKHGD extends Database {
             throwables.printStackTrace();
             return arrayList;
         }
-    }
+    }*/
     public static void main(String [] args){
         DatabaseKHGD db = new DatabaseKHGD();
         ArrayList s = db.getListMVCHoTenGV();
