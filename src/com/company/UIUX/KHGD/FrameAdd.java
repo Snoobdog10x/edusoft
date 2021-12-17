@@ -13,8 +13,8 @@ public class FrameAdd extends JFrame implements ActionListener {
     private String[] listMMH={""};
     private String[] listMPH={""};
     private JLabel[] listLabel = {new JLabel("Số lượng đăng kí"),new JLabel("Số lượng thời khóa biểu")};
-    private JTextField[] listSL= {new JTextField(),new JTextField()};
-    private JComboBox[] listComboBox = {new JComboBox(listTen), new JComboBox(listMNL)
+    JTextField[] listSL= {new JTextField(),new JTextField()};
+    JComboBox[] listComboBox = {new JComboBox(listTen), new JComboBox(listMNL)
             , new JComboBox(listNhom), new JComboBox(listThucHanh), new JComboBox(listMMH),new JComboBox(listMPH)};
     private JLabel[] listLabelComboBox = {new JLabel("Họ và tên GV"), new JLabel("Mã nhóm lớp"),
             new JLabel("Nhóm"), new JLabel("Thực hành"), new JLabel("Mã môn học"),new JLabel("Phòng học")};

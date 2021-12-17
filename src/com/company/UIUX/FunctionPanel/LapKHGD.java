@@ -114,6 +114,19 @@ public class LapKHGD extends JPanel implements ActionListener{
     private void addAction(){
 
     }
+    private void clickTable() {
+        int row = MainTable.getSelectedRow();
+        FrameUpdate up = new FrameUpdate();
+        String[] a={};
+        if (row >= 0) {
+            for (int i = 0; i < 8; i++) {
+                a[i] = MainTable.getValueAt(row,i).toString();
 
+            }
+            up.setJComboBox(a);
+
+        }
+        System.out.println(row);
+    }
 }
 
