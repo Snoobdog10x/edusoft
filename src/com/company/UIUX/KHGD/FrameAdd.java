@@ -1,12 +1,16 @@
 package com.company.UIUX.KHGD;
 
+import com.company.Class.Vienchuc;
+import com.company.Process.ProcessLKHGD;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FrameAdd extends JFrame implements ActionListener {
-    private String[] listTen={""};
+    private ProcessLKHGD pss = new ProcessLKHGD();
+    private String[] listTen=  pss.getMVCHotenGV();
     private String[] listMNL={""};
     private String[] listNhom={""};
     private String[] listThucHanh={""};
@@ -16,7 +20,7 @@ public class FrameAdd extends JFrame implements ActionListener {
     JTextField[] listSL= {new JTextField(),new JTextField()};
     JComboBox[] listComboBox = {new JComboBox(listTen), new JComboBox(listMNL)
             , new JComboBox(listNhom), new JComboBox(listThucHanh), new JComboBox(listMMH),new JComboBox(listMPH)};
-    private JLabel[] listLabelComboBox = {new JLabel("Họ và tên GV"), new JLabel("Mã nhóm lớp"),
+    private JLabel[] listLabelComboBox = {new JLabel("Mã VC - Họ Tên GV"), new JLabel("Mã nhóm lớp"),
             new JLabel("Nhóm"), new JLabel("Thực hành"), new JLabel("Mã môn học"),new JLabel("Phòng học")};
     private JButton commit= new JButton("Thêm");
     public FrameAdd() {
@@ -69,6 +73,8 @@ public class FrameAdd extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==commit){
+            Vienchuc vc = new Vienchuc();
+
             JOptionPane.showMessageDialog( this,
                     "Notification");
         }
