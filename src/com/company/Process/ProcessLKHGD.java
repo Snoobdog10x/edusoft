@@ -2,10 +2,13 @@ package com.company.Process;
 
 import com.company.Class.KHGD;
 import com.company.Class.NhomLopPhongHoc;
-import com.company.Class.VienChucNhomLop;
+import com.company.Class.SinhVien;
+import com.company.Class.*;
 import com.company.DatabaseConnection.DatabaseKHGD;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessLKHGD {
@@ -51,5 +54,13 @@ public class ProcessLKHGD {
         boolean check = db.addNLPH(NLPH);
         return check;
     }
-
+    public String[] getHotenGV(){
+        DatabaseKHGD DB = new DatabaseKHGD();
+        String[] list =(String[]) DB.getListHoTenGV().toArray(new String[DB.getListHoTenGV().size()]);
+        return list;
+    }
+    public static void main(String[]args){
+        ProcessLKHGD p = new ProcessLKHGD();
+        p.getHotenGV();
+    }
 }

@@ -1,9 +1,6 @@
 package com.company.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +8,7 @@ import com.company.Class.*;
 
 public class DatabaseKHGD extends Database {
     private Connection con;
+
     public List<KHGD> getKHGD() {
         List<KHGD> list = new ArrayList<>();
         String SQL = "SELECT n.*,a.ten " +
@@ -36,28 +34,54 @@ public class DatabaseKHGD extends Database {
         }
     }
 
-    public boolean addVCNL(VienChucNhomLop VCNL){
-       boolean check = false;
-        String SQL = "";
-        int rowcount = updatetoDatabasebySQL(SQL);
-        if(rowcount == 1) {
-            check = true;
+    public boolean addVCNL(VienChucNhomLop VCNL) {
+        try {
+            String sql = "INSERT INTO vienchunhomlop VALUES(?,?)";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, VCNL.getMVC());
+            stmt.setInt(2, VCNL.getManhomlop());
+            stmt.executeUpdate();
+        } catch (Exception aC) {
+            System.err.println(aC.getMessage());
+        } finally {
+            closedb();
         }
-        return check;
-    }
-    public boolean addNLPH(NhomLopPhongHoc NLPH){
-            try {
-                String sql = "INSERT INTO nhomlopphonghoc VALUES(?,?)";
-                PreparedStatement stmt = con.prepareStatement(sql);
-                stmt.setInt(1, NLPH.getMaNhomLop());
-                stmt.setInt(2, NLPH.getMPH());
-                stmt.executeUpdate();
-            } catch (Exception aC) {
-                System.err.println(aC.getMessage());
-            } finally {
-                closedb();
-            }
         return true;
     }
 
+    public boolean addNLPH(NhomLopPhongHoc NLPH) {
+        try {
+            String sql = "INSERT INTO nhomlopphonghoc VALUES(?,?)";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, NLPH.getMaNhomLop());
+            stmt.setInt(2, NLPH.getMPH());
+            stmt.executeUpdate();
+        } catch (Exception aC) {
+            System.err.println(aC.getMessage());
+        } finally {
+            closedb();
+        }
+        return true;
+    }
+
+    public ArrayList getListHoTenGV() {
+        ArrayList<String> arrayList = new ArrayList<String>();
+        try {
+            String sql = "select * from vienchuc";
+            ResultSet rs = getResultsetbySQL(sql);
+            while (rs.next()) {
+                arrayList.add(rs.getString("holot") + " " + rs.getString("ten"));
+            }
+        } catch (Exception gC) {
+            System.err.println(gC.getMessage());
+        } finally {
+            closedb();
+        }
+        return arrayList;
+    }
+
+    public static void main(String[] args) {
+        DatabaseKHGD DB = new DatabaseKHGD();
+        System.out.println(DB.getListHoTenGV());
+    }
 }
