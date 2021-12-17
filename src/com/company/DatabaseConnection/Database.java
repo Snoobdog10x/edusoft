@@ -54,7 +54,7 @@ public class Database {
         List<lichsudangky> list = new ArrayList<lichsudangky>();
         String SQL = "SELECT l.ID, s.MSSV,s.ten,n.manhomlop,n.Nhom,n.thuchanh,h.MMH,h.tenmonhoc,l.ngaydangki " +
                 "FROM lichsudangky l, sinhvien s, nhomlophoc n,hocphan h " +
-                "WHERE l.MSSV=s.MSSV and l.Manhomlop=n.Manhomlop and l.MMH=h.MMH";
+                "WHERE l.MSSV=s.MSSV and l.Manhomlop=n.Manhomlop and n.MMH=h.MMH";
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             while (rs.next()) {
