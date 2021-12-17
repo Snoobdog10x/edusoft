@@ -13,7 +13,7 @@ import java.util.List;
 public class ProcessDKMH {
     private List<lichsudangky> lsdk;
     private List<SinhVien> qlsv;
-    private List<KHGD> lsKHGD;
+    private List<Object[]> lsKHGD;
     public ProcessDKMH(){
     }
     private void loadlsdk(){
@@ -57,19 +57,18 @@ public class ProcessDKMH {
         db.closedb();
     }
     private void loadlsKHGD(){
-        DatabaseKHGD db= new DatabaseKHGD();
-        lsKHGD=db.getKHGD();
+        Database db= new Database();
+        lsKHGD=db.getkhgd();
         db.closedb();
     }
 
     public DefaultTableModel loadTableModelKHGD(){
         loadlsKHGD();
-        String[] col = new String[]{"Họ lót","Tên GV","Mã nhóm lớp","Nhóm","Thực hành","Mã môn Học",
-                "Số lượng ĐK","Số lượng tkb"};
+        String[] col = new String[]{"Mã nhóm lớp","Nhóm","Thực Hành","MMh","Số lượng ĐK","Số lượng TKB",
+                "tenmonhoc","số tín chỉ","Số tiết","Tên Giảng viên","MPH"};
         DefaultTableModel defaultTableModel=new DefaultTableModel(col,0);
-        for(KHGD i:lsKHGD){
-            Object[] objects=i.toObjectArray();
-            defaultTableModel.addRow(objects);
+        for(Object[] i:lsKHGD){
+            defaultTableModel.addRow(i);
         }
         return defaultTableModel;
     }
