@@ -27,6 +27,16 @@ public class SinhVien {
         this.sdt = sdt;
     }
 
+    public SinhVien( String malop, String holot, String ten, Date ngaysinh, String sdt ,String manganh, String noisinh, String email) {
+        this.malop = malop;
+        this.holot = holot;
+        this.ten = ten;
+        this.ngaysinh = ngaysinh;
+        this.manganh = manganh;
+        this.noisinh = noisinh;
+        this.email = email;
+        this.sdt = sdt;
+    }
     public int getMSSV() {
         return MSSV;
     }
