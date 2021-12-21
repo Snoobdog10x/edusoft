@@ -170,7 +170,7 @@ public class DatabaseKHGD extends Database {
         ResultSet rs = getResultsetbySQL(SQL);
         int manhomlop = 0;
         try {
-            while(rs.next()){
+            while (rs.next()) {
                 manhomlop = rs.getInt("manhomlop");
             }
             return manhomlop;
@@ -180,4 +180,51 @@ public class DatabaseKHGD extends Database {
         }
     }
 
+    public boolean updateNLH(NhomLopHoc nlh) {
+        boolean check = false;
+
+        String SQL = "Update nhomlophoc " +
+                "set nhom =" + nlh.getNhom() +
+                ",SLdangki = " + nlh.getSLdangki() + ",SLtkb=" + nlh.getSLtkb() +" "+
+                " where Manhomlop =" + nlh.getManhomlop();
+        int rowcount = updatetoDatabasebySQL(SQL);
+        if (rowcount == 1) {
+            check = true;
+        }
+        return check;
+    }
+
+    public boolean deleteVCNL(String a) {
+        boolean check = false;
+        String SQL = "Delete from vienchucnhomlop " +
+                "where Manhomlop =" + Integer.parseInt(a);
+        //System.out.println(SQL);
+        int rowcount = updatetoDatabasebySQL(SQL);
+        if (rowcount == 1) {
+            check = true;
+        }
+        return check;
+    }
+
+    public boolean CheckAdd(String nhom, String MMH) {
+        boolean check = false;
+        String SQL = "select * from nhomlophoc";
+        ResultSet rs = getResultsetbySQL(SQL);
+        try {
+            while (rs.next()) {
+                if (nhom.equalsIgnoreCase(String.valueOf(rs.getInt("Nhom")))) {
+                    if (MMH.equalsIgnoreCase(String.valueOf(rs.getInt("MMH")))) {
+                        if (1 != rs.getInt("thuchanh")) {
+                            check = false;
+                        } else check = true;
+                    } else check = true;
+                } else
+                    check = true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return check;
+        }
+        return check;
+    }
 }

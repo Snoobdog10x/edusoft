@@ -22,12 +22,17 @@ public class NhomLopHoc {
         this.SLdangki = SLdangki;
         this.SLtkb = SLtkb;
     }
-
     public NhomLopHoc(int manhomlop, int nhom, int thuchanh, int MMH, int SLdangki, int SLtkb) {
         Manhomlop = manhomlop;
         Nhom = nhom;
         this.thuchanh = thuchanh;
         this.MMH = MMH;
+        this.SLdangki = SLdangki;
+        this.SLtkb = SLtkb;
+    }
+    public NhomLopHoc(int manhomlop,int nhom, int SLdangki, int SLtkb) {
+        Manhomlop = manhomlop;
+        Nhom = nhom;
         this.SLdangki = SLdangki;
         this.SLtkb = SLtkb;
     }

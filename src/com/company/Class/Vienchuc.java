@@ -115,7 +115,7 @@ public class Vienchuc {
     @Override
     public String toString() {
         return
-                "mã viên chức=" + MVC + "-" +
+                MVC + "-" +
                 "" + holot  + " " + ten;
     }
 

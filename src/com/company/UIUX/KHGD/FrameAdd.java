@@ -14,11 +14,11 @@ public class FrameAdd extends JFrame implements ActionListener {
     private ArrayList<Vienchuc> mvc = pss.getMVCList();
     private ArrayList<HocPhan> HP = pss.getlistMH();
     private String[] listTen = pss.getMVCHotenGV();
-    private String[] listThucHanh = {"Có","Không"};
+    private String[] listThucHanh = {"Có", "Không"};
     private String[] listMMH = pss.getListMH();
     private String[] listMPH = pss.getListPH();
-    private JLabel[] listLabel = {new JLabel("Nhóm"),new JLabel("Số lượng đăng kí"), new JLabel("Số lượng thời khóa biểu")};
-    JTextField[] listSL = {new JTextField(),new JTextField(), new JTextField()};
+    private JLabel[] listLabel = {new JLabel("Nhóm"), new JLabel("Số lượng đăng kí"), new JLabel("Số lượng thời khóa biểu")};
+    JTextField[] listSL = {new JTextField(), new JTextField(), new JTextField()};
     JComboBox[] listComboBox = {new JComboBox(listTen)
             , new JComboBox(listThucHanh), new JComboBox(listMMH), new JComboBox(listMPH)};
     private JLabel[] listLabelComboBox = {new JLabel("Mã VC - Họ Tên GV"), new JLabel("Thực hành"), new JLabel("Mã môn học"), new JLabel("Phòng học")};
@@ -73,7 +73,6 @@ public class FrameAdd extends JFrame implements ActionListener {
     private void addEvent() {
         commit.addActionListener(this);
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -82,35 +81,38 @@ public class FrameAdd extends JFrame implements ActionListener {
                 int mavc = 0;
                 int manl = 0;
                 int maph = Integer.parseInt(listMPH[listComboBox[3].getSelectedIndex()]);
-                int MMH=0;
-                int thuchanh=0;
-                if(listThucHanh[listComboBox[1].getSelectedIndex()].equalsIgnoreCase("Có")){
-                    thuchanh=1;
+                int MMH = 0;
+                int thuchanh = 0;
+                if (listThucHanh[listComboBox[1].getSelectedIndex()].equalsIgnoreCase("Có")) {
+                    thuchanh = 1;
                 }
                 for (int i = 0; i < HP.size(); i++) {
-                    if (listMMH[listComboBox[2].getSelectedIndex()].equalsIgnoreCase(HP.get(i).toString())){
+                    if (listMMH[listComboBox[2].getSelectedIndex()].equalsIgnoreCase(HP.get(i).toString())) {
                         MMH = HP.get(i).getMMH();
-
                     }
                 }
-                NhomLopHoc nlh = new NhomLopHoc(Integer.parseInt(listSL[0].getText().toString()),thuchanh,MMH,Integer.parseInt(listSL[1].getText().toString()),Integer.parseInt(listSL[2].getText().toString()));
+                NhomLopHoc nlh = new NhomLopHoc(Integer.parseInt(listSL[0].getText().toString()), thuchanh, MMH, Integer.parseInt(listSL[1].getText().toString()), Integer.parseInt(listSL[2].getText().toString()));
                 pss.AddNLH(nlh);
                 manl = pss.getMNL();
                 for (int i = 0; i < mvc.size(); i++) {
-                    if (listTen[listComboBox[0].getSelectedIndex()].equalsIgnoreCase(mvc.get(i).toString())){
+                    if (listTen[listComboBox[0].getSelectedIndex()].equalsIgnoreCase(mvc.get(i).toString())) {
                         mavc = mvc.get(i).getMVC();
 
                     }
                 }
-                manl = pss.getMNL();
-                VienChucNhomLop vcnl = new VienChucNhomLop(manl,mavc);
-                pss.addVCNL(vcnl);
-                NhomLopPhongHoc NLPH = new NhomLopPhongHoc(manl,maph);
-                pss.addNLPH(NLPH);
-                JOptionPane.showMessageDialog(this,"Them Thanh Cong");
-            }catch (Exception s){
-                JOptionPane.showMessageDialog(this,"ERROR");
+                if(pss.CheckAdd(listSL[0].getText(),String.valueOf(MMH))==true){
+                    manl = pss.getMNL();
+                    VienChucNhomLop vcnl = new VienChucNhomLop(manl, mavc);
+                    pss.addVCNL(vcnl);
+                    NhomLopPhongHoc NLPH = new NhomLopPhongHoc(manl, maph);
+                    pss.addNLPH(NLPH);
+                    JOptionPane.showMessageDialog(this, "Them Thanh Cong");
+                }else
+                    JOptionPane.showMessageDialog(this, "Trùng kế hoạch");
+            } catch (Exception s) {
+                JOptionPane.showMessageDialog(this, "ERROR");
             }
         }
     }
+
 }

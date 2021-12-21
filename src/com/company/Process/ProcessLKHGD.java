@@ -88,4 +88,19 @@ public class ProcessLKHGD {
         int check = db.getlastNLH();
         return check;
     }
+    public boolean deleteVCNL(String a){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.deleteVCNL(a);
+        return check;
+    }
+    public boolean updateNLH(NhomLopHoc NLH){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.updateNLH(NLH);
+        return check;
+    }
+    public boolean CheckAdd(String nhom,String MMH){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.CheckAdd(nhom,MMH);
+        return check;
+    }
 }

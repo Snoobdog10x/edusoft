@@ -34,7 +34,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
     }
 
     //Start Init Panel
-    private void init() {
+    public void init() {
         loadTable();
         addEvent();
         BottomPanel();
@@ -120,6 +120,8 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
         }
     }
 
+
+
     private void reloadtable() {
         MainTable.setModel(ProcessLKHGD.loadTableModel());
     }
@@ -140,6 +142,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
             }
 
         }
+
         up.uiux(a);
     }
 
