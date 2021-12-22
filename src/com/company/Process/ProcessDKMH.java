@@ -82,16 +82,6 @@ public class ProcessDKMH {
         db.closedb();
     }
 
-    public JComboBox<MaNhomLop> loadNhomMonHoc() {
-        JComboBox<MaNhomLop> comboBox = new JComboBox<>();
-        loadlsKHGD();
-        for (Object[] i : lsKHGD) {
-            comboBox.addItem(new MaNhomLop(Integer.parseInt(i[0].toString()), Integer.parseInt(i[1].toString())
-                    , Integer.parseInt(i[2].toString()), Integer.parseInt(i[3].toString()), i[4].toString()));
-        }
-        return comboBox;
-    }
-
     public DefaultTableModel loadTableModelKHGD() {
         loadlsKHGD();
         String[] col = new String[]{"Mã nhóm lớp", "Nhóm", "Thực Hành", "MMH", "Số lượng ĐK", "Số lượng TKB",
