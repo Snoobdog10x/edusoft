@@ -60,6 +60,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
     }
+
     public void reloadtable() {
         MainTable.setModel(processDKMH.reloadTableModel((DefaultTableModel) MainTable.getModel(), MainTable.getRowCount()));
     }
@@ -90,7 +91,6 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
     private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField(),
             new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField()};
-
     private void LeftPanel() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int screenwidth = (int) (size.width);
@@ -99,8 +99,9 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
         for (int i = 0; i < LeftLabels.length; i++) {
             LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
-            if(i!=3) LeftTextfields[i].setEnabled(false);
             LeftPanel.add(LeftLabels[i]);
+            if (i != 3)
+                LeftTextfields[i].setEnabled(false);
             LeftPanel.add(LeftTextfields[i]);
         }
     }
@@ -150,30 +151,35 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         });
 
     }
-    private void clearLeftText(){
-        for (JTextField i:LeftTextfields) {
+
+    private void clearLeftText() {
+        for (JTextField i : LeftTextfields) {
             i.setText("");
         }
     }
+
     private void updatelsdk() {
         try {
             String ID = LeftTextfields[0].getText();
+            String MSSV = LeftTextfields[1].getText();
             String NMH = LeftTextfields[3].getText();
-            if (ID.trim() == "" || ID == null){
+            if (ID.trim() == "" || ID == null) {
                 JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
                 return;
             }
-            if(NMH.trim() == "" || NMH == null) {
+            if (NMH.trim() == "" || NMH == null) {
                 JOptionPane.showMessageDialog(this, "Nhập mã môn học cần sửa đổi");
-            return;
+                return;
             }
-            lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(NMH));
-            int value= processDKMH.updatelsdk(ls);
-            if(value>0){
+            lichsudangky ls = new lichsudangky(Integer.parseInt(ID),Integer.parseInt(MSSV), Integer.parseInt(NMH));
+            int value = processDKMH.updatelsdk(ls);
+            if (value > 0) {
                 JOptionPane.showMessageDialog(this, "cập nhật thành công");
-            }
-            else{
-                JOptionPane.showMessageDialog(this, "cập nhật không thành công");
+            } else {
+                if (value == -1)
+                    JOptionPane.showMessageDialog(this, "Trùng nhóm lớp đăng kí");
+                else
+                    JOptionPane.showMessageDialog(this, "cập nhật không thành công");
             }
             clearLeftText();
             MainTable.getSelectionModel().clearSelection();
@@ -182,19 +188,19 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(this, "Mã nhóm môn học phải là số!");
         }
     }
-
     //End Init Panel
     //Start Event
     @Override
     public void actionPerformed(ActionEvent b) {
         if (b.getSource() == add) {
-            new DangkimonhocFrame(processDKMH,this);
+            new DangkimonhocFrame(processDKMH, this);
         }
         if (b.getSource() == update) {
             updatelsdk();
         }
         if (b.getSource() == reload) {
             reloadtable();
+            clearLeftText();
         }
     }
     //End Event
