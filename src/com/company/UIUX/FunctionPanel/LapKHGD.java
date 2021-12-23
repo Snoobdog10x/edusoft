@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.FileOutputStream;
 
 import com.company.UIUX.KHGD.FrameAdd;
@@ -130,6 +131,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
         }
         if(e.getSource() == export){
             exportToPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
         }
     }
 
@@ -183,8 +185,8 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
         try{
             int count=MainTable.getRowCount();
             Document document=new Document();
-            String fname = java.time.LocalDate.now().toString()+" - DanhSachKeHoach.pdf";
-            PdfWriter.getInstance(document, new FileOutputStream("D:\\"+fname));
+            String fname = java.time.LocalDate.now().toString()+" - DS kế hoạch giảng dạy.pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(".\\src\\com\\company\\ExportFile\\LKHGD\\"+fname));
             document.open();
             Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Chunk chunk = new Chunk("",font);
@@ -201,7 +203,6 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
             tab.addCell(new Paragraph("Số tiết", font));
             tab.addCell(new Paragraph("Tên Giảng viên", font));
             tab.addCell(new Paragraph("Mã Phòng Học", font));
-
             for(int i=0;i<count;i++){
                 Object obj1 = GetData(MainTable, i, 0);
                 Object obj2 = GetData(MainTable, i, 1);
