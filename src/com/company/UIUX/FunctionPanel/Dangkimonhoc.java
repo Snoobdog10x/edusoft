@@ -33,6 +33,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật đăng kí");
     private JButton export = new JButton("xuất PDF");
+    private JButton Clear = new JButton("xóa các miền");
     private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
     private JScrollPane MainScroll;
@@ -82,9 +83,10 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         jtfFilter.setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
         BottomPanel = new JPanel();
         BottomPanel.add(add);
-        BottomPanel.add(update);
+        //BottomPanel.add(update);
         BottomPanel.add(reload);
         BottomPanel.add(export);
+
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
     }
@@ -114,6 +116,8 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                 LeftTextfields[i].setEnabled(false);
             LeftPanel.add(LeftTextfields[i]);
         }
+        LeftPanel.add(update);
+        LeftPanel.add(Clear);
     }
 
     private void addEvent() {
@@ -121,6 +125,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         update.addActionListener(this);
         reload.addActionListener(this);
         export.addActionListener(this);
+        Clear.addActionListener(this);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -215,6 +220,11 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             clearLeftText();
         }
         if (b.getSource() == export) {
+            exportToPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
+        }
+        if (b.getSource() == Clear) {
+            clearLeftText();
         }
     }
     public static final String FONT = "C:\\Windows\\Fonts\\times.ttf";
@@ -223,18 +233,21 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             int count=MainTable.getRowCount();
             com.itextpdf.text.Document document=new Document();
             String fname = java.time.LocalDate.now().toString()+" - Danh sách Đăng kí.pdf";
-            PdfWriter.getInstance(document, new FileOutputStream("E:\\"+fname));
+            PdfWriter.getInstance(document, new FileOutputStream("./src/com/company/ExportFile/DKMH/"+fname));
             document.open();
             Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Chunk chunk = new Chunk("",font);
             document.add(chunk);
-            PdfPTable tab=new PdfPTable(6);
+            PdfPTable tab=new PdfPTable(9);
+            tab.addCell(new Paragraph("ID", font));
+            tab.addCell(new Paragraph("MSSV", font));
+            tab.addCell(new Paragraph("Tên Sinh Viên", font));
+            tab.addCell(new Paragraph("Mã Nhóm", font));
+            tab.addCell(new Paragraph("Nhóm", font));
+            tab.addCell(new Paragraph("Thực hành", font));
             tab.addCell(new Paragraph("Mã môn học", font));
-            tab.addCell(new Paragraph("Tên môn học", font));
-            tab.addCell(new Paragraph("Mã bộ môn", font));
-            tab.addCell(new Paragraph("Số tín chỉ", font));
-            tab.addCell(new Paragraph("Số tiết", font));
-            tab.addCell(new Paragraph("Số tiết thực hành", font));
+            tab.addCell(new Paragraph("Tên Môn Học", font));
+            tab.addCell(new Paragraph("Ngày Đăng kí", font));
             for(int i=0;i<count;i++){
                 Object obj1 = GetData(MainTable, i, 0);
                 Object obj2 = GetData(MainTable, i, 1);
@@ -242,18 +255,28 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                 Object obj4 = GetData(MainTable, i, 3);
                 Object obj5 = GetData(MainTable, i, 4);
                 Object obj6 = GetData(MainTable, i, 5);
+                Object obj7 = GetData(MainTable, i, 6);
+                Object obj8 = GetData(MainTable, i, 7);
+                Object obj9 = GetData(MainTable, i, 8);
                 String value1=obj1.toString();
                 String value2=obj2.toString();
                 String value3=obj3.toString();
                 String value4=obj4.toString();
                 String value5=obj5.toString();
                 String value6=obj6.toString();
+                String value7=obj7.toString();
+                String value8=obj8.toString();
+                String value9=obj9.toString();
                 tab.addCell(new Paragraph(value1, font));
                 tab.addCell(new Paragraph(value2, font));
                 tab.addCell(new Paragraph(value3, font));
                 tab.addCell(new Paragraph(value4, font));
                 tab.addCell(new Paragraph(value5, font));
                 tab.addCell(new Paragraph(value6, font));
+                tab.addCell(new Paragraph(value7, font));
+                tab.addCell(new Paragraph(value8, font));
+                tab.addCell(new Paragraph(value9, font));
+
             }
             document.add(tab);
             document.close();
