@@ -216,6 +216,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         }
         if (e.getSource() == export) {
             processQLVC.ExportPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
         }
     }
 
