@@ -38,6 +38,7 @@ public class Database {
             return null;
         }
     }
+
     public int updatetoDatabasebySQL(String SQL) {
         try {
             Statement stmt = null;
@@ -109,21 +110,38 @@ public class Database {
         }
     }
 
-    public int updatelsdk(lichsudangky ls) {
-        String query = ("UPDATE lichsudangky SET Manhomlop=? WHERE ID=?");
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, ls.getManhomlop());
-            pstmt.setInt(2, ls.getID());
-            System.out.println(pstmt);
-            return pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            return -1;
+    private boolean isdupplicateupdate(lichsudangky ls) {
+        String SQL = "select * \n" +
+                "from lichsudangky l\n" +
+                "where l.MSSV=" + ls.getMSSV() + " and l.Manhomlop=" + ls.getManhomlop();
+        try {
+            ResultSet rs = getResultsetbySQL(SQL);
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
+    }
+
+    public int updatelsdk(lichsudangky ls) {
+        if (!isdupplicateupdate(ls)) {
+            String query = ("UPDATE lichsudangky SET Manhomlop=? WHERE ID=?");
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, ls.getManhomlop());
+                pstmt.setInt(2, ls.getID());
+                //System.out.println(pstmt);
+                return pstmt.executeUpdate();
+            } catch (SQLException ex) {
+                return -1;
+            }
+        }
+        return -1;
     }
 
     public List<Object[]> getkhgd() {
         List<Object[]> list = new ArrayList<>();
         String SQL = "SELECT n.*,a.ten,nlph.MPH FROM (SELECT nl.*,hp.tenmonhoc,hp.sotinchi,hp.sotiet FROM nhomlophoc nl,hocphan hp WHERE nl.MMH=hp.MMH) n, nhomlopphonghoc nlph ,(SELECT v.ten, vn.Manhomlop FROM vienchuc v,vienchucnhomlop vn WHERE v.MVC=vn.MVC) a WHERE n.Manhomlop=a.Manhomlop && n.Manhomlop = nlph.Manhomlop && nlph.Manhomlop=a.Manhomlop";
+        //System.out.println(SQL);
         ResultSet rs = getResultsetbySQL(SQL);
         try {
             int i = 0;
@@ -144,10 +162,9 @@ public class Database {
     private boolean isDuplicate(int MSSV, int MMH) {
         String SQL = "select * \n" +
                 "from hocphan h, nhomlophoc n, lichsudangky l\n" +
-                "where h.MMH=n.MMH and l.Manhomlop=n.Manhomlop and l.MSSV="+MSSV+" and h.MMH="+MMH;
-        System.out.println(SQL);
+                "where h.MMH=n.MMH and l.Manhomlop=n.Manhomlop and l.MSSV=" + MSSV + " and h.MMH=" + MMH;
         try {
-            ResultSet rs=getResultsetbySQL(SQL);
+            ResultSet rs = getResultsetbySQL(SQL);
             return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,16 +173,15 @@ public class Database {
     }
 
     public int DKMH(int MSSV, int MMH, int MNL) throws SQLException {
-        if(!isDuplicate(MSSV,MMH)){
-            String sql="Insert into lichsudangky (MSSV,Manhomlop,ngaydangki) " +
+        if (!isDuplicate(MSSV, MMH)) {
+            String sql = "Insert into lichsudangky (MSSV,Manhomlop,ngaydangki) " +
                     "Values(?,?,?)";
-            PreparedStatement statement=conn.prepareStatement(sql);
-            statement.setInt(1,MSSV);
-            statement.setInt(2,MNL);
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, MSSV);
+            statement.setInt(2, MNL);
             statement.setDate(3, new Date(Calendar.getInstance().getTime().getTime()));
             return statement.executeUpdate();
-        }
-        else {
+        } else {
             return -1;
         }
     }

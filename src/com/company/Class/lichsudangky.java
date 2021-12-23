@@ -69,9 +69,10 @@ public class lichsudangky {
         return MMH;
     }
 
-    public lichsudangky(int ID, int manhomlop) {
+    public lichsudangky(int ID,int MSSV, int manhomlop) {
         this.ID = ID;
         this.manhomlop = manhomlop;
+        this.MSSV=MSSV;
     }
 
     public int getID() {
