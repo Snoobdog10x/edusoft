@@ -297,7 +297,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
             int count=MainTable.getRowCount();
             Document document=new Document();
             String fname = java.time.LocalDate.now().toString()+" - Danh sách môn học.pdf";
-            PdfWriter.getInstance(document, new FileOutputStream("E:\\"+fname));
+            PdfWriter.getInstance(document, new FileOutputStream("./src/com/company/ExportFile/QLMH/"+fname));
             document.open();
             Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Chunk chunk = new Chunk("",font);
