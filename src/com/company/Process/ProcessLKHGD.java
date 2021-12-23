@@ -51,5 +51,56 @@ public class ProcessLKHGD {
         }
         return a;
     }
+    public String[] getListPH(){
+        DatabaseKHGD DB = new DatabaseKHGD();
+        ArrayList mv = DB.getListPH();
+        String [] a=new String[mv.size()];
+        for(int i=0;i<mv.size();i++){
+            a[i] = mv.get(i).toString();
+        }
+        return a;
+    }
+    public ArrayList<Vienchuc> getMVCList(){
+        DatabaseKHGD DB = new DatabaseKHGD();
+        return DB.getListMVCHoTenGV();
+    }
+    public String[] getListMH(){
+        DatabaseKHGD DB = new DatabaseKHGD();
+        ArrayList mv = DB.getMH();
+        String [] a=new String[mv.size()];
+        for(int i=0;i<mv.size();i++){
+            a[i] = mv.get(i).toString();
+        }
+        return a;
+    }
+    public ArrayList<HocPhan> getlistMH(){
+        DatabaseKHGD DB = new DatabaseKHGD();
+        return DB.getMH();
+    }
+    public boolean AddNLH(NhomLopHoc NLH){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.AddNL(NLH);
+        return check;
+    }
 
+    public int getMNL() {
+        DatabaseKHGD db = new DatabaseKHGD();
+        int check = db.getlastNLH();
+        return check;
+    }
+    public boolean deleteVCNL(String a){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.deleteVCNL(a);
+        return check;
+    }
+    public boolean updateNLH(NhomLopHoc NLH){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.updateNLH(NLH);
+        return check;
+    }
+    public boolean CheckAdd(String nhom,String MMH){
+        DatabaseKHGD db = new DatabaseKHGD();
+        boolean check = db.CheckAdd(nhom,MMH);
+        return check;
+    }
 }

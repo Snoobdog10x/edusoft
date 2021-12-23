@@ -1,13 +1,19 @@
 package com.company.UIUX.FunctionPanel;
 
-import com.company.Class.HocPhan;
+
 import com.company.Class.Vienchuc;
 import com.company.Process.ProcessDKMH;
 import com.company.Process.ProcessQLVC;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -38,6 +44,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     private JButton reload = new JButton("Tải Lại Bảng");
     private JButton update = new JButton("Cập nhật viên chức");
     private JButton clear = new JButton("Làm mới miền nhập");
+    private JButton export = new JButton("Xuất file báo cáo");
     private BorderLayout MainLayout = new BorderLayout();
     private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
@@ -48,6 +55,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     public Quanlyvienchuc() {
         init();
     }
+
 
     private JTextField jtfFilter = new JTextField();
 
@@ -86,6 +94,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         BottomPanel.add(reload);
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
+        BottomPanel.add(export);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -101,7 +110,6 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
             @Override
             public void removeUpdate(DocumentEvent e) {
                 String text = jtfFilter.getText();
-
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
@@ -186,6 +194,7 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         reload.addActionListener(this);
         MainTable.addMouseListener(this);
         clear.addActionListener(this);
+        export.addActionListener(this);
     }
 
 
@@ -199,9 +208,14 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
         }
         if (e.getSource() == reload) {
             reloadtable();
+
         }
         if (e.getSource() == clear) {
             clearTextFields();
+        }
+        if (e.getSource() == export) {
+            processQLVC.ExportPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
         }
     }
 

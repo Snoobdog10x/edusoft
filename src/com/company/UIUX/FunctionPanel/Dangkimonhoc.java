@@ -4,6 +4,11 @@ import com.company.Class.lichsudangky;
 import com.company.Main;
 import com.company.Process.ProcessDKMH;
 import com.company.UIUX.Dangkimonhoc.DangkimonhocFrame;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -16,6 +21,8 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class Dangkimonhoc extends JPanel implements ActionListener {
     private BorderLayout Mainlayout = new BorderLayout();
@@ -25,6 +32,8 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     private JButton add = new JButton("Đăng ký môn học");
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật đăng kí");
+    private JButton export = new JButton("xuất PDF");
+    private JButton Clear = new JButton("xóa các miền");
     private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
     private JScrollPane MainScroll;
@@ -60,6 +69,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
     }
+
     public void reloadtable() {
         MainTable.setModel(processDKMH.reloadTableModel((DefaultTableModel) MainTable.getModel(), MainTable.getRowCount()));
     }
@@ -73,8 +83,10 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         jtfFilter.setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
         BottomPanel = new JPanel();
         BottomPanel.add(add);
-        BottomPanel.add(update);
+        //BottomPanel.add(update);
         BottomPanel.add(reload);
+        BottomPanel.add(export);
+
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
     }
@@ -99,16 +111,21 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
         for (int i = 0; i < LeftLabels.length; i++) {
             LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
-            if(i!=3) LeftTextfields[i].setEnabled(false);
             LeftPanel.add(LeftLabels[i]);
+            if (i != 3)
+                LeftTextfields[i].setEnabled(false);
             LeftPanel.add(LeftTextfields[i]);
         }
+        LeftPanel.add(update);
+        LeftPanel.add(Clear);
     }
 
     private void addEvent() {
         add.addActionListener(this);
         update.addActionListener(this);
         reload.addActionListener(this);
+        export.addActionListener(this);
+        Clear.addActionListener(this);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -150,30 +167,35 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         });
 
     }
-    private void clearLeftText(){
-        for (JTextField i:LeftTextfields) {
+
+    private void clearLeftText() {
+        for (JTextField i : LeftTextfields) {
             i.setText("");
         }
     }
+
     private void updatelsdk() {
         try {
             String ID = LeftTextfields[0].getText();
+            String MSSV = LeftTextfields[1].getText();
             String NMH = LeftTextfields[3].getText();
-            if (ID.trim() == "" || ID == null){
+            if (ID.trim() == "" || ID == null) {
                 JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
                 return;
             }
-            if(NMH.trim() == "" || NMH == null) {
+            if (NMH.trim() == "" || NMH == null) {
                 JOptionPane.showMessageDialog(this, "Nhập mã môn học cần sửa đổi");
-            return;
+                return;
             }
-            lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(NMH));
-            int value= processDKMH.updatelsdk(ls);
-            if(value>0){
+            lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(MSSV), Integer.parseInt(NMH));
+            int value = processDKMH.updatelsdk(ls);
+            if (value > 0) {
                 JOptionPane.showMessageDialog(this, "cập nhật thành công");
-            }
-            else{
-                JOptionPane.showMessageDialog(this, "cập nhật không thành công");
+            } else {
+                if (value == -1)
+                    JOptionPane.showMessageDialog(this, "Trùng nhóm lớp đăng kí");
+                else
+                    JOptionPane.showMessageDialog(this, "cập nhật không thành công");
             }
             clearLeftText();
             MainTable.getSelectionModel().clearSelection();
@@ -188,14 +210,81 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent b) {
         if (b.getSource() == add) {
-            new DangkimonhocFrame(processDKMH,this);
+            new DangkimonhocFrame(processDKMH, this);
         }
         if (b.getSource() == update) {
             updatelsdk();
         }
         if (b.getSource() == reload) {
             reloadtable();
+            clearLeftText();
+        }
+        if (b.getSource() == export) {
+            exportToPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
+        }
+        if (b.getSource() == Clear) {
+            clearLeftText();
         }
     }
-    //End Event
+    public static final String FONT = "C:\\Windows\\Fonts\\times.ttf";
+    private void exportToPDF(){
+        try{
+            int count=MainTable.getRowCount();
+            com.itextpdf.text.Document document=new Document();
+            String fname = java.time.LocalDate.now().toString()+" - Danh sách Đăng kí.pdf";
+            PdfWriter.getInstance(document, new FileOutputStream("./src/com/company/ExportFile/DKMH/"+fname));
+            document.open();
+            Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Chunk chunk = new Chunk("",font);
+            document.add(chunk);
+            PdfPTable tab=new PdfPTable(9);
+            tab.addCell(new Paragraph("ID", font));
+            tab.addCell(new Paragraph("MSSV", font));
+            tab.addCell(new Paragraph("Tên Sinh Viên", font));
+            tab.addCell(new Paragraph("Mã Nhóm", font));
+            tab.addCell(new Paragraph("Nhóm", font));
+            tab.addCell(new Paragraph("Thực hành", font));
+            tab.addCell(new Paragraph("Mã môn học", font));
+            tab.addCell(new Paragraph("Tên Môn Học", font));
+            tab.addCell(new Paragraph("Ngày Đăng kí", font));
+            for(int i=0;i<count;i++){
+                Object obj1 = GetData(MainTable, i, 0);
+                Object obj2 = GetData(MainTable, i, 1);
+                Object obj3 = GetData(MainTable, i, 2);
+                Object obj4 = GetData(MainTable, i, 3);
+                Object obj5 = GetData(MainTable, i, 4);
+                Object obj6 = GetData(MainTable, i, 5);
+                Object obj7 = GetData(MainTable, i, 6);
+                Object obj8 = GetData(MainTable, i, 7);
+                Object obj9 = GetData(MainTable, i, 8);
+                String value1=obj1.toString();
+                String value2=obj2.toString();
+                String value3=obj3.toString();
+                String value4=obj4.toString();
+                String value5=obj5.toString();
+                String value6=obj6.toString();
+                String value7=obj7.toString();
+                String value8=obj8.toString();
+                String value9=obj9.toString();
+                tab.addCell(new Paragraph(value1, font));
+                tab.addCell(new Paragraph(value2, font));
+                tab.addCell(new Paragraph(value3, font));
+                tab.addCell(new Paragraph(value4, font));
+                tab.addCell(new Paragraph(value5, font));
+                tab.addCell(new Paragraph(value6, font));
+                tab.addCell(new Paragraph(value7, font));
+                tab.addCell(new Paragraph(value8, font));
+                tab.addCell(new Paragraph(value9, font));
+
+            }
+            document.add(tab);
+            document.close();
+        }
+        catch(Exception e){}
+    }
+    public Object GetData(JTable table, int row_index, int col_index){
+        return table.getModel().getValueAt(row_index, col_index);
+    }
 }
+//End Event

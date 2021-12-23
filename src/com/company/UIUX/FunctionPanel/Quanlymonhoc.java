@@ -14,7 +14,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
 public class Quanlymonhoc extends JPanel implements ActionListener, MouseListener {
     private BorderLayout Mainlayout = new BorderLayout();
     private JPanel LeftPanel;
@@ -24,6 +36,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
     private JButton reload = new JButton("Tải lại bảng");
     private JButton update = new JButton("Cập nhật môn học");
     private JButton clear = new JButton("Làm mới miền nhập");
+    private JButton export = new JButton("Xuất file pdf");
     private JTable MainTable;
     private JScrollPane MainScroll;
     private TableRowSorter<TableModel> rowSorter;
@@ -71,6 +84,7 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
         BottomPanel.add(reload);
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
+        BottomPanel.add(export);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -132,9 +146,9 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
         add.addActionListener(this);
         update.addActionListener(this);
         reload.addActionListener(this);
-
         MainTable.addMouseListener(this);
         clear.addActionListener(this);
+        export.addActionListener(this);
     }
 
     //End Init Panel
@@ -152,6 +166,9 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
         }
         if(e.getSource() == clear){
             clearTextFields();
+        }
+        if(e.getSource() == export){
+           exportToPDF();
         }
     }
 
@@ -274,5 +291,50 @@ public class Quanlymonhoc extends JPanel implements ActionListener, MouseListene
             LeftTextfields[i].setText("");
         }
     }
-
+    public static final String FONT = "C:\\Windows\\Fonts\\times.ttf";
+    private void exportToPDF(){
+        try{
+            int count=MainTable.getRowCount();
+            Document document=new Document();
+            String fname = java.time.LocalDate.now().toString()+" - Danh sách môn học.pdf";
+            PdfWriter.getInstance(document, new FileOutputStream("./src/com/company/ExportFile/QLMH/"+fname));
+            document.open();
+            Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Chunk chunk = new Chunk("",font);
+            document.add(chunk);
+            PdfPTable tab=new PdfPTable(6);
+            tab.addCell(new Paragraph("Mã môn học", font));
+            tab.addCell(new Paragraph("Tên môn học", font));
+            tab.addCell(new Paragraph("Mã bộ môn", font));
+            tab.addCell(new Paragraph("Số tín chỉ", font));
+            tab.addCell(new Paragraph("Số tiết", font));
+            tab.addCell(new Paragraph("Số tiết thực hành", font));
+            for(int i=0;i<count;i++){
+                Object obj1 = GetData(MainTable, i, 0);
+                Object obj2 = GetData(MainTable, i, 1);
+                Object obj3 = GetData(MainTable, i, 2);
+                Object obj4 = GetData(MainTable, i, 3);
+                Object obj5 = GetData(MainTable, i, 4);
+                Object obj6 = GetData(MainTable, i, 5);
+                String value1=obj1.toString();
+                String value2=obj2.toString();
+                String value3=obj3.toString();
+                String value4=obj4.toString();
+                String value5=obj5.toString();
+                String value6=obj6.toString();
+                tab.addCell(new Paragraph(value1, font));
+                tab.addCell(new Paragraph(value2, font));
+                tab.addCell(new Paragraph(value3, font));
+                tab.addCell(new Paragraph(value4, font));
+                tab.addCell(new Paragraph(value5, font));
+                tab.addCell(new Paragraph(value6, font));
+            }
+            document.add(tab);
+            document.close();
+        }
+        catch(Exception e){}
+    }
+    public Object GetData(JTable table, int row_index, int col_index){
+        return table.getModel().getValueAt(row_index, col_index);
+    }
 }
