@@ -203,9 +203,12 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add) {
             addAction();
+            reloadtable();
         }
         if (e.getSource() == update) {
             updateAction();
+            clearTextFields();
+            reloadtable();
         }
         if (e.getSource() == reload) {
             reloadtable();

@@ -34,7 +34,7 @@ public class ProcessQLVC {
         {
             String fname = java.time.LocalDate.now().toString()+" - Danh Sách viên chức.pdf";
             String path = new File(".").getCanonicalPath();
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path+"\\src\\com\\company\\ExportFile\\"+fname));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path+"\\src\\com\\company\\ExportFile\\QLVC\\"+fname));
             document.open();
             Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             document.add(new Paragraph("Danh Sách viên chức",font));
