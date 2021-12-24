@@ -110,7 +110,6 @@ public class Quanlyvienchuc extends JPanel implements ActionListener, MouseListe
             @Override
             public void removeUpdate(DocumentEvent e) {
                 String text = jtfFilter.getText();
-
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {

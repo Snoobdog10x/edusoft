@@ -13,9 +13,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import com.company.UIUX.KHGD.FrameAdd;
 import com.company.UIUX.KHGD.FrameUpdate;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class LapKHGD extends JPanel implements ActionListener, MouseListener {
     private BorderLayout Mainlayout = new BorderLayout();
@@ -28,7 +35,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
     private TableRowSorter<TableModel> rowSorter;
     private ProcessLKHGD ProcessLKHGD = new ProcessLKHGD();
     private BorderLayout MainLayout = new BorderLayout();
-
+    private JButton export = new JButton("Xuất file pdf");
     public LapKHGD() {
         init();
     }
@@ -38,6 +45,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
         loadTable();
         addEvent();
         BottomPanel();
+
         CenterPanel();
         setLayout(Mainlayout);
         add(CenterPanel, BorderLayout.CENTER);
@@ -50,6 +58,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
             }
         };
         rowSorter = new TableRowSorter<>(MainTable.getModel());
+        MainTable.setRowSorter(rowSorter);
         MainScroll = new JScrollPane(MainTable);
     }
 
@@ -65,6 +74,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
         BottomPanel.add(reload);
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
+        BottomPanel.add(export);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -106,6 +116,7 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
         add.addActionListener(this);
         reload.addActionListener(this);
         MainTable.addMouseListener(this);
+        export.addActionListener(this);
     }
 
     //End Init Panel
@@ -113,23 +124,22 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add) {
-            FrameAdd FA = new FrameAdd();
+            new FrameAdd();
         }
         if (e.getSource() == reload) {
             reloadtable();
         }
+        if(e.getSource() == export){
+            exportToPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
+        }
     }
-
-
 
     private void reloadtable() {
         MainTable.setModel(ProcessLKHGD.loadTableModel());
     }
 
     //End Event
-    private void addAction() {
-
-    }
 
     private void clickTable() {
         FrameUpdate up = new FrameUpdate();
@@ -142,7 +152,6 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
             }
 
         }
-
         up.uiux(a);
     }
 
@@ -170,6 +179,73 @@ public class LapKHGD extends JPanel implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+    public static final String FONT = "C:\\Windows\\Fonts\\times.ttf";
+    private void exportToPDF(){
+        try{
+            int count=MainTable.getRowCount();
+            Document document=new Document();
+            String fname = java.time.LocalDate.now().toString()+" - DS kế hoạch giảng dạy.pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(".\\src\\com\\company\\ExportFile\\LKHGD\\"+fname));
+            document.open();
+            Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Chunk chunk = new Chunk("",font);
+            document.add(chunk);
+            PdfPTable tab=new PdfPTable(11);
+            tab.addCell(new Paragraph("Mã nhóm lớp", font));
+            tab.addCell(new Paragraph("Nhóm", font));
+            tab.addCell(new Paragraph("Thực Hành", font));
+            tab.addCell(new Paragraph("Mã môn học", font));
+            tab.addCell(new Paragraph("Số lượng ĐK", font));
+            tab.addCell(new Paragraph("Số lượng TKB", font));
+            tab.addCell(new Paragraph("tên môn học", font));
+            tab.addCell(new Paragraph("số tín chỉ", font));
+            tab.addCell(new Paragraph("Số tiết", font));
+            tab.addCell(new Paragraph("Tên Giảng viên", font));
+            tab.addCell(new Paragraph("Mã Phòng Học", font));
+            for(int i=0;i<count;i++){
+                Object obj1 = GetData(MainTable, i, 0);
+                Object obj2 = GetData(MainTable, i, 1);
+                Object obj3 = GetData(MainTable, i, 2);
+                Object obj4 = GetData(MainTable, i, 3);
+                Object obj5 = GetData(MainTable, i, 4);
+                Object obj6 = GetData(MainTable, i, 5);
+                Object obj7 = GetData(MainTable, i, 6);
+                Object obj8 = GetData(MainTable, i, 7);
+                Object obj9 = GetData(MainTable, i, 8);
+                Object obj10 = GetData(MainTable, i, 9);
+                Object obj11 = GetData(MainTable, i, 10);
+                String value1=obj1.toString();
+                String value2=obj2.toString();
+                String value3=obj3.toString();
+                String value4=obj4.toString();
+                String value5=obj5.toString();
+                String value6=obj6.toString();
+                String value7=obj7.toString();
+                String value8=obj8.toString();
+                String value9=obj9.toString();
+                String value10=obj10.toString();
+                String value11=obj11.toString();
+                tab.addCell(new Paragraph(value1, font));
+                tab.addCell(new Paragraph(value2, font));
+                tab.addCell(new Paragraph(value3, font));
+                tab.addCell(new Paragraph(value4, font));
+                tab.addCell(new Paragraph(value5, font));
+                tab.addCell(new Paragraph(value6, font));
+                tab.addCell(new Paragraph(value7, font));
+                tab.addCell(new Paragraph(value8, font));
+                tab.addCell(new Paragraph(value9, font));
+                tab.addCell(new Paragraph(value10, font));
+                tab.addCell(new Paragraph(value11, font));
+
+            }
+            document.add(tab);
+            document.close();
+        }
+        catch(Exception e){}
+    }
+    public Object GetData(JTable table, int row_index, int col_index){
+        return table.getModel().getValueAt(row_index, col_index);
     }
 
 }

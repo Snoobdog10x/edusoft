@@ -4,6 +4,11 @@ import com.company.Class.HocPhan;
 import com.company.Class.SinhVien;
 import com.company.Class.Vienchuc;
 import com.company.Process.ProcessQLSV;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -21,10 +26,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 public class Quanlysinhvien extends JPanel implements ActionListener {
@@ -35,6 +45,7 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
     private JDatePickerImpl datePicker;
     private JButton add = new JButton("Đăng ký sinh viên");
     private JButton update = new JButton("Cập nhật");
+    private JButton export = new JButton("Xuất file pdf");
     private JButton reload = new JButton("Tải lại bảng");
     private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
@@ -79,6 +90,7 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
         BottomPanel = new JPanel();
         BottomPanel.add(add);
         BottomPanel.add(update);
+        BottomPanel.add(export);
         BottomPanel.add(reload);
         BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
         BottomPanel.add(jtfFilter);
@@ -150,6 +162,7 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
         add.addActionListener(this);
         update.addActionListener(this);
         reload.addActionListener(this);
+        export.addActionListener(this);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -199,6 +212,10 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
         }
         if (e.getSource() == reload) {
             reloadtable();
+        }
+        if (e.getSource() == export) {
+            ExportPDF();
+            JOptionPane.showMessageDialog(this, "Xuất file thành công");
         }
     }
     private void addAction() {
@@ -298,6 +315,64 @@ public class Quanlysinhvien extends JPanel implements ActionListener {
     private void reloadtable() {
         MainTable.setModel(processQLSV.reloadTableModel((DefaultTableModel) MainTable.getModel(), MainTable.getRowCount()));
     }
+    public String FONT = "C:\\Windows\\Fonts\\times.ttf";
+    public void ExportPDF() {
+        try {
+            int count = MainTable.getRowCount();
+            Document document = new Document();
+            String fname = java.time.LocalDate.now().toString() + " Danh sách sinh viên.pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(".\\src\\com\\company\\ExportFile\\" + fname));
+            document.open();
+            Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Chunk chunk = new Chunk("", font);
+            document.add(chunk);
+            PdfPTable tab = new PdfPTable(9);
+            tab.addCell(new Paragraph("Mã sinh viên", font));
+            tab.addCell(new Paragraph("Mã lớp", font));
+            tab.addCell(new Paragraph("Tên lót", font));
+            tab.addCell(new Paragraph("Tên", font));
+            tab.addCell(new Paragraph("Ngày sinh", font));
+            tab.addCell(new Paragraph("SĐT", font));
+            tab.addCell(new Paragraph("Mã ngành", font));
+            tab.addCell(new Paragraph("Nơi sinh", font));
+            tab.addCell(new Paragraph("Email", font));
 
+            for (int i = 0; i < count; i++) {
+                Object obj1 = GetData(MainTable, i, 0);
+                Object obj2 = GetData(MainTable, i, 1);
+                Object obj3 = GetData(MainTable, i, 2);
+                Object obj4 = GetData(MainTable, i, 3);
+                Object obj5 = GetData(MainTable, i, 4);
+                Object obj6 = GetData(MainTable, i, 5);
+                Object obj7 = GetData(MainTable, i, 6);
+                Object obj8 = GetData(MainTable, i, 7);
+                Object obj9 = GetData(MainTable, i, 8);
+                String value1 = obj1.toString();
+                String value2 = obj2.toString();
+                String value3 = obj3.toString();
+                String value4 = obj4.toString();
+                String value5 = obj5.toString();
+                String value6 = obj6.toString();
+                String value7 = obj7.toString();
+                String value8 = obj8.toString();
+                String value9 = obj9.toString();
+                tab.addCell(new Paragraph(value1, font));
+                tab.addCell(new Paragraph(value2, font));
+                tab.addCell(new Paragraph(value3, font));
+                tab.addCell(new Paragraph(value4, font));
+                tab.addCell(new Paragraph(value5, font));
+                tab.addCell(new Paragraph(value6, font));
+                tab.addCell(new Paragraph(value7, font));
+                tab.addCell(new Paragraph(value8, font));
+                tab.addCell(new Paragraph(value9, font));
+            }
+            document.add(tab);
+            document.close();
+        } catch (Exception e) {
+        }
+    }
+    public Object GetData(JTable table, int row_index, int col_index){
+        return table.getModel().getValueAt(row_index, col_index);
+    }
 
 }
