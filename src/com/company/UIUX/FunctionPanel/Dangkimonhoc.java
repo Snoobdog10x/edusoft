@@ -26,14 +26,12 @@ import java.io.FileOutputStream;
 
 public class Dangkimonhoc extends JPanel implements ActionListener {
     private BorderLayout Mainlayout = new BorderLayout();
-    private JPanel LeftPanel;
     private JPanel CenterPanel;
-    private JPanel BottomPanel;
+    private JPanel LeftPanel;
     private JButton add = new JButton("Đăng ký môn học");
     private JButton reload = new JButton("Tải lại bảng");
-    private JButton update = new JButton("Cập nhật đăng kí");
     private JButton export = new JButton("xuất PDF");
-    private JButton Clear = new JButton("xóa các miền");
+    private JButton Delete = new JButton("Xóa lịch sử đăng ký");
     private TableRowSorter<TableModel> rowSorter;
     private JTable MainTable;
     private JScrollPane MainScroll;
@@ -46,14 +44,11 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
 
     //Start Init Panel
     private void init() {
-        BottomPanel();
         LeftPanel();
         loadTable();
         CenterPanel();
         setLayout(Mainlayout);
-        add(LeftPanel, BorderLayout.WEST);
         add(CenterPanel, BorderLayout.CENTER);
-
         addEvent();
     }
 
@@ -76,56 +71,37 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
 
     private JTextField jtfFilter = new JTextField();
 
-    private void BottomPanel() {
+    private void LeftPanel() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth = (int) (size.width);
-        int screenheight = (int) (size.height);
-        jtfFilter.setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
-        BottomPanel = new JPanel();
-        BottomPanel.add(add);
-        //BottomPanel.add(update);
-        BottomPanel.add(reload);
-        BottomPanel.add(export);
-
-        BottomPanel.add(new JLabel("Nhập từ để tìm kiếm trong bảng"));
-        BottomPanel.add(jtfFilter);
+        int width = (int) (size.width * 0.14);
+        int height = (int) (size.height);
+        jtfFilter.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.025)));
+        LeftPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        LeftPanel.setPreferredSize(new Dimension(width, height));
+        LeftPanel.add(new JLabel("Nhập từ khóa để tìm kiếm trong bảng"));
+        LeftPanel.add(jtfFilter);
+        add.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.03)));
+        reload.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.03)));
+        export.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.03)));
+        Delete.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.03)));
+        LeftPanel.add(add);
+        LeftPanel.add(reload);
+        LeftPanel.add(export);
+        LeftPanel.add(Delete);
     }
 
     private void CenterPanel() {
         CenterPanel = new JPanel();
         CenterPanel.setLayout(MainLayout);
         CenterPanel.add(MainScroll, BorderLayout.CENTER);
-        CenterPanel.add(BottomPanel, BorderLayout.SOUTH);
-    }
-
-    private JLabel[] LeftLabels = {new JLabel("ID"), new JLabel("Mã SV"), new JLabel("Tên Sinh Viên"), new JLabel("Mã Nhóm"), new JLabel("Nhóm")
-            , new JLabel("TH"), new JLabel("Mã MH"), new JLabel("Tên Môn Học"), new JLabel("Ngày Đăng ký")};
-    private JTextField[] LeftTextfields = {new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField(),
-            new JTextField(), new JTextField(), new JTextField(), new JTextField(), new JTextField()};
-
-    private void LeftPanel() {
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenwidth = (int) (size.width);
-        int screenheight = (int) (size.height);
-        LeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        LeftPanel.setPreferredSize(new Dimension((int) (screenwidth * 0.15), screenheight));
-        for (int i = 0; i < LeftLabels.length; i++) {
-            LeftTextfields[i].setPreferredSize(new Dimension((int) (screenwidth * 0.14), (int) (screenheight * 0.02)));
-            LeftPanel.add(LeftLabels[i]);
-            if (i != 3)
-                LeftTextfields[i].setEnabled(false);
-            LeftPanel.add(LeftTextfields[i]);
-        }
-        LeftPanel.add(update);
-        LeftPanel.add(Clear);
+        CenterPanel.add(LeftPanel, BorderLayout.WEST);
     }
 
     private void addEvent() {
         add.addActionListener(this);
-        update.addActionListener(this);
         reload.addActionListener(this);
         export.addActionListener(this);
-        Clear.addActionListener(this);
+        Delete.addActionListener(this);
         jtfFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -152,59 +128,20 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        MainTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                try {
-                    int j = 0;
-                    for (JTextField i : LeftTextfields) {
-                        int a = MainTable.convertRowIndexToModel(MainTable.getSelectedRow());
-                        i.setText(MainTable.getValueAt(a, j++).toString());
-                    }
-                } catch (Exception e) {
-
-                }
-            }
-        });
-
     }
 
-    private void clearLeftText() {
-        for (JTextField i : LeftTextfields) {
-            i.setText("");
-        }
-    }
-
-    private void updatelsdk() {
+    public void DeleteLSDK(){
         try {
-            String ID = LeftTextfields[0].getText();
-            String MSSV = LeftTextfields[1].getText();
-            String NMH = LeftTextfields[3].getText();
-            if (ID.trim() == "" || ID == null) {
-                JOptionPane.showMessageDialog(this, "Chưa chọn lịch sử để sửa đổi");
-                return;
-            }
-            if (NMH.trim() == "" || NMH == null) {
-                JOptionPane.showMessageDialog(this, "Nhập mã môn học cần sửa đổi");
-                return;
-            }
-            lichsudangky ls = new lichsudangky(Integer.parseInt(ID), Integer.parseInt(MSSV), Integer.parseInt(NMH));
-            int value = processDKMH.updatelsdk(ls);
-            if (value > 0) {
-                JOptionPane.showMessageDialog(this, "cập nhật thành công");
-            } else {
-                if (value == -1)
-                    JOptionPane.showMessageDialog(this, "Trùng nhóm lớp đăng kí");
-                else
-                    JOptionPane.showMessageDialog(this, "cập nhật không thành công");
-            }
-            clearLeftText();
-            MainTable.getSelectionModel().clearSelection();
-            reloadtable();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Mã nhóm môn học phải là số!");
+            int rowsv = MainTable.getSelectedRow();
+            Object mssv = MainTable.getValueAt(rowsv, 0).toString();
+            Object MNL = MainTable.getValueAt(rowsv, 2);
+            Object MMH = MainTable.getValueAt(rowsv, 5);
+            String Message=processDKMH.DeleteLSDK(mssv,MNL,MMH);
+            JOptionPane.showMessageDialog(this,Message);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(this,"Vui lòng lịch sử đăng ký cần xóa");
         }
     }
-
     //End Init Panel
     //Start Event
     @Override
@@ -212,33 +149,29 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
         if (b.getSource() == add) {
             new DangkimonhocFrame(processDKMH, this);
         }
-        if (b.getSource() == update) {
-            updatelsdk();
-        }
-        if (b.getSource() == reload) {
+        if (b.getSource() == Delete) {
+            DeleteLSDK();
             reloadtable();
-            clearLeftText();
         }
         if (b.getSource() == export) {
             exportToPDF();
             JOptionPane.showMessageDialog(this, "Xuất file thành công");
         }
-        if (b.getSource() == Clear) {
-            clearLeftText();
-        }
     }
+
     public static final String FONT = "C:\\Windows\\Fonts\\times.ttf";
-    private void exportToPDF(){
-        try{
-            int count=MainTable.getRowCount();
-            com.itextpdf.text.Document document=new Document();
-            String fname = java.time.LocalDate.now().toString()+" - Danh sách Đăng kí.pdf";
-            PdfWriter.getInstance(document, new FileOutputStream("./src/com/company/ExportFile/DKMH/"+fname));
+
+    private void exportToPDF() {
+        try {
+            int count = MainTable.getRowCount();
+            com.itextpdf.text.Document document = new Document();
+            String fname = java.time.LocalDate.now().toString() + " - Danh sách Đăng kí.pdf";
+            PdfWriter.getInstance(document, new FileOutputStream("./src/com/company/ExportFile/DKMH/" + fname));
             document.open();
             Font font = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Chunk chunk = new Chunk("",font);
+            Chunk chunk = new Chunk("", font);
             document.add(chunk);
-            PdfPTable tab=new PdfPTable(9);
+            PdfPTable tab = new PdfPTable(9);
             tab.addCell(new Paragraph("ID", font));
             tab.addCell(new Paragraph("MSSV", font));
             tab.addCell(new Paragraph("Tên Sinh Viên", font));
@@ -248,7 +181,7 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
             tab.addCell(new Paragraph("Mã môn học", font));
             tab.addCell(new Paragraph("Tên Môn Học", font));
             tab.addCell(new Paragraph("Ngày Đăng kí", font));
-            for(int i=0;i<count;i++){
+            for (int i = 0; i < count; i++) {
                 Object obj1 = GetData(MainTable, i, 0);
                 Object obj2 = GetData(MainTable, i, 1);
                 Object obj3 = GetData(MainTable, i, 2);
@@ -258,15 +191,15 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                 Object obj7 = GetData(MainTable, i, 6);
                 Object obj8 = GetData(MainTable, i, 7);
                 Object obj9 = GetData(MainTable, i, 8);
-                String value1=obj1.toString();
-                String value2=obj2.toString();
-                String value3=obj3.toString();
-                String value4=obj4.toString();
-                String value5=obj5.toString();
-                String value6=obj6.toString();
-                String value7=obj7.toString();
-                String value8=obj8.toString();
-                String value9=obj9.toString();
+                String value1 = obj1.toString();
+                String value2 = obj2.toString();
+                String value3 = obj3.toString();
+                String value4 = obj4.toString();
+                String value5 = obj5.toString();
+                String value6 = obj6.toString();
+                String value7 = obj7.toString();
+                String value8 = obj8.toString();
+                String value9 = obj9.toString();
                 tab.addCell(new Paragraph(value1, font));
                 tab.addCell(new Paragraph(value2, font));
                 tab.addCell(new Paragraph(value3, font));
@@ -276,14 +209,14 @@ public class Dangkimonhoc extends JPanel implements ActionListener {
                 tab.addCell(new Paragraph(value7, font));
                 tab.addCell(new Paragraph(value8, font));
                 tab.addCell(new Paragraph(value9, font));
-
             }
             document.add(tab);
             document.close();
+        } catch (Exception e) {
         }
-        catch(Exception e){}
     }
-    public Object GetData(JTable table, int row_index, int col_index){
+
+    public Object GetData(JTable table, int row_index, int col_index) {
         return table.getModel().getValueAt(row_index, col_index);
     }
 }

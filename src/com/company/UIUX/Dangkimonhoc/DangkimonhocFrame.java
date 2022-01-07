@@ -175,16 +175,8 @@ public class DangkimonhocFrame extends JFrame implements ActionListener {
             Object MMH = nmhtable.getValueAt(rowmonhoc, 3);
             Object MNL = nmhtable.getValueAt(rowmonhoc, 0);
             ProcessDKMH DKMH=new ProcessDKMH();
-            int value=DKMH.Dangkymonhoc(mssv,MMH,MNL);
-            if(value!=0&&value!=-1){
-                JOptionPane.showMessageDialog(this,"Đăng ký thành công");
-                dispose();
-                return;
-            }
-            if(value==-1){
-                JOptionPane.showMessageDialog(this,"Sinh Viên đăng kí trùng");
-                return;
-            }
+            String Message=DKMH.Dangkymonhoc(mssv,MNL,MMH);
+            JOptionPane.showMessageDialog(this,Message);
         }catch (Exception e){
             JOptionPane.showMessageDialog(this,"Vui lòng chọn sinh viên và môn cần đăng ký");
         }
